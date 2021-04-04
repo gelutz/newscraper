@@ -1,0 +1,23 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+      "outDir": "dist",
+      "baseUrl": "./src",
+      "module": "commonjs",
+      "target": "es2015",
+      "sourceMap": true,
+      "strictNullChecks": true,
+      "noImplicitAny": false,
+      "preserveConstEnums": true,
+      "esModuleInterop": true,
+      // "removeComments": true,
+      "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

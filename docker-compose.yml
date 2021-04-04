@@ -1,0 +1,36 @@
+version: "3.7"
+
+services:
+  api:
+    build:
+      context: ./app/api/
+      target: development
+    container_name: api
+    env_file:
+      - ./app/api/.env
+    depends_on:
+      - db
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+      - ${DEBUG_PORT}:${DEBUG_PORT}
+    volumes:
+      - ./app/api/src:/usr/app/api/src
+    command: ["npm", "run", "dev"]
+
+    # logging:
+    #   driver: "json-file"
+    #   options:
+    #     max-size: "10m"
+    #     max-file: "5"
+
+  db:
+    image: postgres:alpine
+    container_name: db
+    # restart: always
+    ports:
+      - ${DB_PORT}:5432
+
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      PSOTGRES_USER: ${DB_USER}
