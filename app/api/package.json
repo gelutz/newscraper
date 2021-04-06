@@ -15,7 +15,9 @@
    },
    "scripts": {
       "start": "ts-node src/index.ts",
-      "dev": "tsc-watch --onSuccess \"node --inspect=0.0.0.0:9229 dist/index.js\" --onFailure \"echo WHOOPS! Server compilation failed\""
+      "dev": "tsc-watch --onSuccess \"node --inspect=0.0.0.0:9229 dist/index.js\" --onFailure \"echo WHOOPS! Server compilation failed\"",
+      "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config ./src/database/ormconfig.ts"
+
    },
    "devDependencies": {
       "@types/express": "^4.17.11",

@@ -1,4 +1,4 @@
-include .env
+
 #
 .PHONY: up
 
@@ -6,6 +6,8 @@ include .env
 #								inconpatível com -d
 # --build 						builda antes de startar	
 up:
+	if [ ! -f "./.env" ]; then echo ".env missing\nRun \`make env\` to create all .env files" && exit 1; fi
+
 	docker-compose up -d --build
 
 .PHONY: down
@@ -13,5 +15,12 @@ up:
 # --rmi (all | local) 	remove (all | local) imagens desse serviço
 # -v 					remove os volumes criados pela tag `volumes`
 down:
+	if [ ! -f "./.env" ]; then echo ".env missing\nRun \`make env\` to create all .env files" && exit 1; fi
+
 	docker-compose down
 #
+
+.PHONY: env
+
+env:
+	if [ -f "./make_dotenv.sh" ]; then bash ./make_dotenv.sh; fi
