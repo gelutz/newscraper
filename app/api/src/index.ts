@@ -1,6 +1,6 @@
 import express from "express"
 import { createConnection } from "typeorm"
-import config from "./ormconfig"
+import config from "./database/ormconfig"
 
 // connects to database
 const app = express()

@@ -14,9 +14,9 @@ const config: ConnectionOptions = {
 	entities: ["src/models/**/*.ts"],
 	migrations: ["src/database/migrations/**/*.ts"],
 	cli: {
-		entitiesDir: "src/models",
-		migrationsDir: "src/database/migrations",
+		entitiesDir: "src/models/",
+		migrationsDir: "src/database/migrations/",
 	},
 }
 
-export default config
+export default { ...config }
