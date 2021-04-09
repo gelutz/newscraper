@@ -10,6 +10,7 @@
       "noImplicitAny": false,
       "preserveConstEnums": true,
       "esModuleInterop": true,
+      "experimentalDecorators": true,
       // "removeComments": true,
       "forceConsistentCasingInFileNames": true
   },

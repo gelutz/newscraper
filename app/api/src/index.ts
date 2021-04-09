@@ -1,9 +1,11 @@
 import express from "express"
 import { createConnection } from "typeorm"
-import config from "./database/ormconfig"
 
+import config from "./database/ormconfig"
+import Routes from "./routes"
 // connects to database
 const app = express()
+app.use(Routes)
 
 createConnection(config)
 	.then(() => console.log("Connected to database."))

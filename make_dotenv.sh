@@ -5,7 +5,7 @@ symlink_dotenv() {
     fi
 }
 
-variables="# SERVER
+text="# SERVER
 #DB_HOST=db
 DB_PORT=5432
 DB_USER=postgres
@@ -20,7 +20,7 @@ DEBUG_PORT=9229
 folders=($(tree -fri --noreport -L 1  ./app/))
 
 if [ ! -f "./.env" ]; then 
-    echo "${variables}" > "./.env"    
+    echo "${text}" > "./.env"    
 fi
 
 for f in ${folders[@]:1}
