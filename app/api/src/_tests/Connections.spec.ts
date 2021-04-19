@@ -4,7 +4,14 @@ import config from "../database/ormconfig";
 
 import News from "../models/News";
 
-describe("testing database C.R.U.D.", () => {
+/*
+ * -> Esse teste deve ser feito com o banco vazio
+ * -> Testa a conexão direta com o banco (sem usar controllers)
+ * roda as migrations,
+ * cria o objeto teste,
+ * salva, busca, atualiza e deleta o objeto teste
+ */
+describe("Direct Database Connection Test Suite", () => {
     const date = format(Date.now(), "yyyy-MM-dd");
 
     const testObject = {
@@ -15,9 +22,11 @@ describe("testing database C.R.U.D.", () => {
         from: "Jest",
     };
 
+    const mockedConfig = { ...config, host: "172.19.0.2" };
     beforeAll(async (done) => {
         try {
-            await createConnection(config);
+            const connection = await createConnection(mockedConfig);
+            await connection.runMigrations();
             done();
         } catch (error) {
             done(error);
@@ -26,49 +35,66 @@ describe("testing database C.R.U.D.", () => {
 
     afterAll(() => {
         const connection = getConnection();
+
         connection.close();
     });
 
-    it("should save data to the database", async () => {
+    it("should save data to the database", async (done) => {
         const connection = getConnection();
         const repository = connection.getRepository(News);
 
-        return repository
-            .save(testObject)
-            .then((data) => {
-                console.log(data);
+        try {
+            const data = await repository.save(testObject);
 
-                expect(data).toHaveProperty("myass");
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    });
-
-    it("should fetch news from database", () => {
-        const connection = getConnection();
-        const repository = connection.getRepository(News);
-
-        return repository.findOne({ id: 1 }).then((data) => {
             expect(data).toHaveProperty("id");
-        });
+            done();
+        } catch (error) {
+            done(error);
+        }
     });
 
-    // it("should update a row", () => {
-    //     const connection = getConnection();
-    //     const repository = connection.getRepository(News);
+    it("should fetch news from database", async (done) => {
+        const connection = getConnection();
+        const repository = connection.getRepository(News);
 
-    //     return repository
-    //         .update({ id: testObject.id }, { title: "Test #666" })
-    //         .then((data) => {
-    //             expect(data).toHaveProperty("affected");
-    //         });
-    // });
+        try {
+            const data = await repository.findOne({ id: 1 });
 
-    // it("should delete a row", () => {
-    //     const connection = getConnection();
-    //     const repository = connection.getRepository(News);
+            expect(data).toHaveProperty("id");
+            done();
+        } catch (error) {
+            done(error);
+        }
+    });
 
-    //     return repository.delete({ id: testObject.id });
-    // });
+    it("should update a row", async (done) => {
+        const connection = getConnection();
+        const repository = connection.getRepository(News);
+
+        try {
+            const data = await repository.update(
+                { id: testObject.id },
+                { title: "Test #666" }
+            );
+
+            expect(data).toHaveProperty("affected");
+            done();
+        } catch (error) {
+            done(error);
+        }
+    });
+
+    it("should delete a row", async (done) => {
+        const connection = getConnection();
+        const repository = connection.getRepository(News);
+
+        try {
+            const data = await repository.delete({ id: testObject.id });
+
+            expect(data).toBeTruthy();
+            done();
+        } catch (error) {
+            done(error);
+        }
+    });
 });

@@ -5,6 +5,8 @@ import config from "./database/ormconfig";
 import Routes from "./routes";
 // connects to database
 const app = express();
+
+app.use(express.json());
 app.use(Routes);
 
 createConnection(config)

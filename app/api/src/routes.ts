@@ -1,9 +1,9 @@
-import { Router } from "express"
+import { Router } from "express";
 
-import NewsController from "./controllers/NewsController"
-const routes = Router()
+import NewsController from "./controllers/NewsController";
+const routes = Router();
 
-routes.get("/", NewsController.index)
-routes.post("/", NewsController.store)
+routes.get("/", NewsController.read);
+routes.post("/", NewsController.create);
 
-export default routes
+export default routes;
