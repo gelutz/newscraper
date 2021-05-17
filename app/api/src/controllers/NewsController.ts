@@ -1,45 +1,41 @@
 import { Request, Response } from "express";
-import { getRepository } from "typeorm";
+import { getCustomRepository } from "typeorm";
 
-import News from "../models/News";
-
-// interface NewsRequest extends Request {
-//     id: number;
-//     title: string;
-//     link: string;
-//     from: string;
-//     date: Date;
-// }
+import { NewsRepository } from "../repositories/NewsRepository";
 
 class NewsController {
     async create(req: Request, res: Response) {
-        const repository = getRepository(News);
+        const repository = getCustomRepository(NewsRepository);
 
         const data = req.body;
         try {
-            const updated = await repository.save(data);
-
-            res.send({ ...updated });
+            const created = await repository.createAndSave(data);
+            return res.status(201).send({ ...created });
         } catch (error) {
-            console.error(error);
+            return res.status(400).send({ message: "Error creating object" });
         }
     }
 
     async read(req: Request, res: Response) {
-        const repository = getRepository(News);
+        const repository = getCustomRepository(NewsRepository);
         const { id } = req.body;
 
         try {
-            const returnedNews = await repository.findOne({ id });
-
-            res.send({ ...returnedNews });
+            const returned = await repository.findOne({ id });
+            let status: number = 404;
+            if (returned?.id) {
+                status = 200;
+            }
+            return res.status(status).send({ ...returned });
         } catch (error) {
-            console.error(error);
+            return res.status(500).send({
+                message: "Error looking for object",
+            });
         }
     }
 
     async update(req: Request, res: Response) {
-        const repository = getRepository(News);
+        const repository = getCustomRepository(NewsRepository);
 
         const { id } = req.body;
         const newValues = { ...req.body };
@@ -47,20 +43,20 @@ class NewsController {
         try {
             const data = await repository.update({ id }, newValues);
 
-            res.send({ ...data });
+            return res.send({ ...data });
         } catch (error) {
             console.error(error);
         }
     }
 
     async delete(req: Request, res: Response) {
-        const repository = getRepository(News);
+        const repository = getCustomRepository(NewsRepository);
         const { id } = req.body;
 
         try {
             const data = await repository.delete({ id });
 
-            res.send({ ...data });
+            return res.send({ ...data });
         } catch (error) {
             console.error(error);
         }
