@@ -1,9 +1,8 @@
-import { createConnection, getConnection } from "typeorm";
-import { format } from "date-fns";
-import config from "../database/ormconfig";
+import { getCustomRepository } from "typeorm";
 
-import News from "../models/News";
+import * as connectionManager from "../database/connection";
 
+import { NewsRepository } from "../repositories/NewsRepository";
 /*
  * -> Esse teste deve ser feito com o banco vazio
  * -> Testa a conexão direta com o banco (sem usar controllers)
@@ -12,39 +11,45 @@ import News from "../models/News";
  * salva, busca, atualiza e deleta o objeto teste
  */
 describe("Direct Database Connection Test Suite", () => {
-    const date = format(Date.now(), "yyyy-MM-dd");
-
     const testObject = {
-        id: 27,
         title: "Test #",
-        date: date,
-        link: "http://localhost:3333/test-",
+        link: "http://localhost:3333/test-3",
         from: "Jest",
     };
 
-    const mockedConfig = { ...config, host: "172.19.0.2" };
     beforeAll(async (done) => {
         try {
-            const connection = await createConnection(mockedConfig);
-            await connection.runMigrations();
+            await connectionManager.connect();
+            await connectionManager.connection.runMigrations();
+
+            // this part is absurd, i know
+            const repo = getCustomRepository(NewsRepository);
+            const result = await repo.find({ link: testObject.link });
+
+            if (result) {
+                await repo.delete({ link: testObject.link });
+            }
+            //
+
             done();
         } catch (error) {
             done(error);
         }
     });
 
-    afterAll(() => {
-        const connection = getConnection();
-
-        connection.close();
+    afterAll(async (done) => {
+        try {
+            connectionManager.disconnect();
+            done();
+        } catch (error) {
+            done(error);
+        }
     });
 
-    it("should save data to the database", async (done) => {
-        const connection = getConnection();
-        const repository = connection.getRepository(News);
-
+    it("should save one register to the database", async (done) => {
         try {
-            const data = await repository.save(testObject);
+            const repo = getCustomRepository(NewsRepository);
+            const data = await repo.createAndSave(testObject);
 
             expect(data).toHaveProperty("id");
             done();
@@ -54,13 +59,11 @@ describe("Direct Database Connection Test Suite", () => {
     });
 
     it("should fetch news from database", async (done) => {
-        const connection = getConnection();
-        const repository = connection.getRepository(News);
-
         try {
-            const data = await repository.findOne({ id: 1 });
+            const repo = getCustomRepository(NewsRepository);
+            const data = await repo.findByTitle(testObject.title);
 
-            expect(data).toHaveProperty("id");
+            expect(data[0]).toHaveProperty("link");
             done();
         } catch (error) {
             done(error);
@@ -68,32 +71,38 @@ describe("Direct Database Connection Test Suite", () => {
     });
 
     it("should update a row", async (done) => {
-        const connection = getConnection();
-        const repository = connection.getRepository(News);
-
+        const repo = getCustomRepository(NewsRepository);
+        const newTitle = "Test #666";
         try {
-            const data = await repository.update(
-                { id: testObject.id },
-                { title: "Test #666" }
-            );
+            await repo.updateOne(testObject, {
+                title: newTitle,
+            });
 
-            expect(data).toHaveProperty("affected");
+            const record = await repo.findOne({ link: testObject.link });
+
+            expect(record?.title).toBe(newTitle);
+
             done();
         } catch (error) {
+            console.log(error);
+
             done(error);
         }
     });
 
     it("should delete a row", async (done) => {
-        const connection = getConnection();
-        const repository = connection.getRepository(News);
+        const repo = getCustomRepository(NewsRepository);
 
         try {
-            const data = await repository.delete({ id: testObject.id });
+            await repo.delete({ link: testObject.link });
+            const record = await repo.findOne({ link: testObject.link });
 
-            expect(data).toBeTruthy();
+            expect(record).toBe(undefined);
+
             done();
         } catch (error) {
+            console.error(error);
+
             done(error);
         }
     });

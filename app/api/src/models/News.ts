@@ -5,16 +5,16 @@ class News {
     @PrimaryGeneratedColumn("increment")
     id: number;
 
-    @Column()
+    @Column("varchar", { length: 150, nullable: false })
     title: string;
 
-    @Column()
+    @Column("text", { nullable: false })
     link: string;
 
-    @Column()
+    @Column("varchar", { length: 20, nullable: true })
     from: string;
 
-    @Column()
+    @Column("date", { nullable: true, default: "current_date" })
     date: Date;
 }
 

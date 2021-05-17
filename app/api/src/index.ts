@@ -1,7 +1,6 @@
 import express from "express";
-import { createConnection } from "typeorm";
 
-import config from "./database/ormconfig";
+import * as connection from "./database/connection";
 import Routes from "./routes";
 // connects to database
 const app = express();
@@ -9,10 +8,8 @@ const app = express();
 app.use(express.json());
 app.use(Routes);
 
-createConnection(config)
-    .then((connection) =>
-        console.log(`Conected to database at ${connection.options["host"]}`)
-    )
-    .catch((error) => console.log(error));
+connection.connect().then(() => {
+    app.listen(3333, () => console.log("Server running at 3333"));
+});
 
-app.listen(3333, () => console.log("Server running at 3333"));
+export { app };
