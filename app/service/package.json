@@ -1,5 +1,5 @@
 {
-    "name": "newscraper-docker",
+    "name": "@newscraper/service",
     "version": "1.0.0",
     "main": "index.js",
     "license": "MIT",

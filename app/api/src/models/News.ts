@@ -12,7 +12,7 @@ class News {
     link: string;
 
     @Column("varchar", { length: 20, nullable: true })
-    from: string;
+    origin: string;
 
     @Column("date", { nullable: true, default: "current_date" })
     date: Date;

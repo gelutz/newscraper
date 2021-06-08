@@ -7,36 +7,65 @@ class NewsController {
     async create(req: Request, res: Response) {
         const repository = getCustomRepository(NewsRepository);
 
-        const data = req.body;
+        const data = { ...req.body };
         try {
             const created = await repository.createAndSave(data);
+
             return res.status(201).send({ ...created });
         } catch (error) {
-            return res.status(400).send({ message: "Error creating object" });
+            console.log("Erro:", error.message);
+            return res.status(400).send({ name: error.name });
         }
     }
 
-    async read(req: Request, res: Response) {
+    async index(req: Request, res: Response) {
         const repository = getCustomRepository(NewsRepository);
-        const { id } = req.body;
+        const { id, title, link, origin, date } = req.body;
 
         try {
-            const returned = await repository.findOne({ id });
+            const returned = await repository.ilike({
+                id,
+                title,
+                link,
+                origin,
+                date,
+            });
+
+            let status = 404;
+            if (returned.length > 0) {
+                status = 200;
+            }
+
+            return res.status(status).send({ ...returned });
+        } catch (error) {
+            console.log("Erro:", error.message);
+            return res.status(404).send({ name: error.name });
+        }
+    }
+
+    async readById(req: Request, res: Response) {
+        const repository = getCustomRepository(NewsRepository);
+        const id = req.params.id;
+
+        try {
+            const returned = await repository.findOneOrFail({ id: +id });
+
             let status: number = 404;
             if (returned?.id) {
                 status = 200;
             }
+
             return res.status(status).send({ ...returned });
         } catch (error) {
-            return res.status(500).send({
-                message: "Error looking for object",
-            });
+            console.log("Erro:", error.message);
+            return res
+                .status(404)
+                .send({ name: error.name ?? "Object not found" });
         }
     }
 
     async update(req: Request, res: Response) {
         const repository = getCustomRepository(NewsRepository);
-
         const { id } = req.body;
         const newValues = { ...req.body };
 
@@ -58,7 +87,9 @@ class NewsController {
 
             return res.send({ ...data });
         } catch (error) {
-            console.error(error);
+            return res
+                .status(500)
+                .send({ name: error.name, message: error.message });
         }
     }
 }

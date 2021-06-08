@@ -5,7 +5,7 @@ import {
     createConnection,
 } from "typeorm";
 
-import { config, testConfig } from "./ormconfig";
+import { prodPostgres, testPostgres } from "./ormconfig";
 // import News from "../models/News";
 
 let connection: Connection;
@@ -16,10 +16,11 @@ export async function connect(): Promise<Connection> {
     }
 
     try {
-        const c = process.env.NODE_ENV === "test" ? testConfig : config;
+        // const c = testPostgres;
+        const c = process.env.NODE_ENV === "test" ? testPostgres : prodPostgres;
         connection = await createConnection(c);
     } catch (e) {
-        console.error(e.stack);
+        console.error(e);
     }
 
     return connection;

@@ -6,15 +6,22 @@ symlink_dotenv() {
 }
 
 text="# SERVER
+SERVER_PORT=3333
+DEBUG_PORT=9229
 DB_HOST=db
 DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=postgres
 DB_DATABASE=newscraper
 
+# CLIENT
+CLIENT_HOST=3001
+
 # SERVICE
-SERVER_PORT=3333
-DEBUG_PORT=9229
+
+# DOCKER
+TARGET=development
+
 "
 
 folders=($(tree -fri --noreport -L 1  ./app/))

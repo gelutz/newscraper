@@ -1,10 +1,10 @@
 import request from "supertest";
-
-import { app } from "../index";
-import * as connectionManager from "../database/connection";
-import News from "models/News";
 import { getCustomRepository } from "typeorm";
+
+import News from "models/News";
+import { app } from "../index";
 import { NewsRepository } from "../repositories/NewsRepository";
+import * as connectionManager from "../database/connection";
 
 describe("Testing route: /", () => {
     const path = "/";
@@ -12,7 +12,7 @@ describe("Testing route: /", () => {
     beforeAll(async (done) => {
         try {
             await connectionManager.connect();
-
+            await connectionManager.connection.runMigrations();
             done();
         } catch (error) {
             done(error);
@@ -29,48 +29,95 @@ describe("Testing route: /", () => {
         }
     });
 
-    describe("GET requests", () => {
+    /**
+     * - GET REQUESTS
+     */
+    describe("GET", () => {
+        // theres an insert in the first migration file that creates this object
         const existingData: Partial<News> = {
-            title: "Test #1",
+            id: 1,
+            title: "t",
         };
 
         const nonExistingData: Partial<News> = {
+            id: 999,
             title: "Test #bibibooboo",
         };
 
-        it("should respond with status 200 (OK)", async (done) => {
-            const response = await request(app)
-                .get(path)
-                .send(existingData)
-                .set("Accept", "application/json");
+        it("indexing data with URL params should return 200 (OK)", async (done) => {
+            try {
+                const response = await request(app)
+                    .get(`${path}${existingData.id}`)
+                    .set("Accept", "application/json");
 
-            console.log(response);
-            expect(response.status).toBe(200);
-            expect(response.body).toHaveProperty("id");
-            done();
+                expect(response.status).toBe(200);
+                expect(response.body).toHaveProperty("id", 1);
+                done();
+            } catch (error) {
+                done(error);
+            }
         });
 
-        it("should respond with status 404 (Not Found)", async (done) => {
-            request(app)
-                .get(path)
-                .send(nonExistingData)
-                .set("Accept", "application/json")
-                .end((err, res) => {
-                    expect(res.status).toBe(404);
-                    done(err);
-                });
+        it("indexing nonexisting data with URL params should return 404 (Not found)", async (done) => {
+            try {
+                const response = await request(app)
+                    .get(`${path}${nonExistingData.id}`)
+                    .set("Accept", "Application/json");
+
+                expect(response.status).toBe(404);
+                expect(response.body).toHaveProperty(["name"]);
+
+                done();
+            } catch (error) {
+                done(error);
+            }
+        });
+
+        it("indexing with partial title should return 200 (OK)", async (done) => {
+            try {
+                const response = await request(app)
+                    .get(`${path}`)
+                    .send({ title: existingData.title })
+                    .set("Accept", "application/json");
+
+                expect(response.status).toBe(200);
+                expect(response.body[0]).toHaveProperty("id");
+
+                done();
+            } catch (error) {
+                done(error);
+            }
+        });
+
+        it("indexing with nonexisting title should return 404 (Not Found)", async (done) => {
+            try {
+                const response = await request(app)
+                    .get(path)
+                    .send({ title: nonExistingData.title })
+                    .set("Accept", "application/json");
+
+                expect(response.status).toBe(404);
+                expect(response.body).toEqual({});
+
+                done();
+            } catch (error) {
+                done(error);
+            }
         });
     });
 
-    describe("POST requests", () => {
-        const data: Omit<News, "id"> = {
+    /**
+     * - POST REQUESTS
+     */
+    describe("POST", () => {
+        const completeObj: Omit<News, "id"> = {
             title: "Foo",
             link: "Bar",
             date: new Date(),
-            from: "Jest",
+            origin: "Jest",
         };
 
-        const invalidData = {
+        const incompleteObj = {
             title: "Foo",
         };
 
@@ -78,10 +125,10 @@ describe("Testing route: /", () => {
             try {
                 // this part is absurd, i know
                 const repo = getCustomRepository(NewsRepository);
-                const result = await repo.find({ link: data.link });
+                const result = await repo.find({ link: completeObj.link });
 
                 if (result) {
-                    await repo.delete({ link: data.link });
+                    await repo.delete({ link: completeObj.link });
                 }
                 //
 
@@ -91,28 +138,48 @@ describe("Testing route: /", () => {
             }
         });
 
-        it("should save and respond with 201 (Created)", async (done) => {
-            const response = await request(app)
-                .post(path)
-                .send(data)
-                .set("Accept", "application/json");
+        it("should save and return 201 (Created)", async (done) => {
+            try {
+                const response = await request(app)
+                    .post(path)
+                    .send(completeObj)
+                    .set("Accept", "application/json");
 
-            expect(response.status).toBe(201);
-            expect(response.body.title).toBe(data.title);
-            done();
+                expect(response.status).toBe(201);
+                expect(response.body.title).toBe(completeObj.title);
+
+                done();
+            } catch (error) {
+                done(error);
+            }
         });
 
-        it("should not accept invalid data and return 400 (Bad Request)", async (done) => {
-            request(app)
-                .post(path)
-                .send(data)
-                .set("Accept", "application/json")
-                .send(invalidData)
-                .end((err, res) => {
-                    expect(res.status).toBe(400);
-                    expect(res.body.message).toBe("Error creating object");
-                    done(err);
-                });
+        it("should not accept and return 400 (Bad Request)", async (done) => {
+            try {
+                const response = await request(app)
+                    .post(path)
+                    .set("Accept", "application/json")
+                    .send(incompleteObj);
+
+                expect(response.status).toBe(400);
+                expect(response.body).toHaveProperty(["name"]);
+
+                done();
+            } catch (error) {
+                done(error);
+            }
         });
     });
+
+    /**
+     * - PATCH REQUESTS
+     */
+    // describe("PATCH", () => {
+    //     const existingData: Partial<News> = {
+    //         id: 1,
+    //         title: "F",
+    //     };
+
+    //     it("should update and return ")
+    // });
 });

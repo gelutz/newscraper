@@ -1,36 +1,56 @@
 version: "3.7"
 
 services:
-  api:
-    build:
-      context: ./app/api/
-      target: development
-    container_name: api
-    env_file:
-      - ./app/api/.env
-    depends_on:
-      - db
-    ports:
-      - ${SERVER_PORT}:${SERVER_PORT}
-      - ${DEBUG_PORT}:${DEBUG_PORT}
-    volumes:
-      - ./app/api/src:/usr/app/api/src
-    command: ["npm", "run", "dev"]
+    api:
+        build:
+            context: ./app/api/
+            target: ${TARGET}
+        container_name: api
+        env_file:
+            - ./app/api/.env
+        depends_on:
+            - db
+        ports:
+            - ${SERVER_PORT}:${SERVER_PORT}
+            - ${DEBUG_PORT}:${DEBUG_PORT}
+        volumes:
+            - ./app/api/src:/usr/app/api/src
+        command: ["npm", "run", "dev"]
 
-    # logging:
-    #   driver: "json-file"
-    #   options:
-    #     max-size: "10m"
-    #     max-file: "5"
+        # logging:
+        #     driver: "json-file"
+        #     options:
+        #         max-size: "10m"
+        #         max-file: "5"
 
-  db:
-    image: postgres:alpine
-    container_name: db
-    # restart: always
-    ports:
-      - ${DB_PORT}:5432
+    db:
+        image: postgres:alpine
+        container_name: db
 
-    environment:
-      POSTGRES_DB: ${DB_DATABASE}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      PSOTGRES_USER: ${DB_USER}
+        # restart: always
+        ports:
+            - ${DB_PORT}:5432
+
+        environment:
+            POSTGRES_DB: ${DB_DATABASE}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            PSOTGRES_USER: ${DB_USER}
+
+    client:
+        build:
+            context: ./app/client
+            target: ${TARGET}
+        container_name: client
+        env_file:
+            - ./app/client/.env
+        depends_on:
+            - api
+        ports:
+            - ${CLIENT_PORT}:${CLIENT_PORT}
+        volumes:
+            - ./app/node_modules
+            - ./app/client/:/usr/app/client/
+        command: ["npm", "run", "start"]
+        environment:
+            CHOKIDAR_USEPOLLING: "true" # seems like this enables hot reloading
+        hostname: lutz.com.br

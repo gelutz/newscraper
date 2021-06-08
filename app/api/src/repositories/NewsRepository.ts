@@ -7,7 +7,6 @@ import {
     Repository,
     UpdateResult,
 } from "typeorm";
-import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
 export interface NewsQuery extends Partial<News> {
@@ -17,32 +16,58 @@ export interface NewsQuery extends Partial<News> {
 
 @EntityRepository(News)
 export class NewsRepository extends Repository<News> {
-    async findByTitle(
-        title: string = "",
-        specific: boolean = true
+    // Usa a expressão ILIKE do postgres
+    // e adiciona %% no início e
+    async ilike(
+        data: Partial<News>,
+        columns: string[] = ["id", "title", "link", "origin", "date"]
     ): Promise<News[]> {
-        if (!specific) {
-            title = "%" + title + "%";
-        }
+        const qb = this.createQueryBuilder().select(columns);
+
+        Object.keys(data).forEach((c) => {
+            if (data[c] === undefined) {
+                return;
+            }
+
+            if (c === "title" || c === "link" || c === "origin") {
+                data[c] = "%" + data[c]?.replace(" ", "%") + "%";
+
+                qb.where(`${c} ilike :${c}`, data);
+
+                return;
+            }
+
+            qb.where(`${c} = :${c}`, data);
+        });
 
         try {
-            const result = await this.createQueryBuilder("news")
-                .where("news.title = :title", { title: title })
-                .getMany();
-
-            return result;
+            return await qb.execute();
         } catch (error) {
-            throw new Error(error);
+            throw Error(error);
         }
     }
 
     async createAndSave(o: NewsQuery): Promise<News> {
+        if (!o.title || !o.link) {
+            throw Error(
+                `Missing arguments:
+                ${o.title ? "Title" : ""};
+                ${o.link ? "Link" : ""}`
+            );
+        }
         const New = this.create();
+
+        let saved: News;
 
         this.metadata.columns.forEach((v) => {
             New[v.propertyName] = o[v.propertyName];
         });
-        const saved = await this.save(New);
+
+        try {
+            saved = await this.save(New);
+        } catch (error) {
+            throw Error(error);
+        }
 
         return saved;
     }
@@ -74,9 +99,6 @@ export class NewsRepository extends Repository<News> {
             .update()
             .set(values)
             .where(criteria);
-        if (this.manager.connection.options.type === "postgres") {
-            qr.returning("id");
-        }
         return await qr.execute();
     }
 }

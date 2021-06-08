@@ -24,7 +24,7 @@ export class news1617577996882 implements MigrationInterface {
                         isUnique: true,
                     },
                     {
-                        name: "from",
+                        name: "origin",
                         type: "varchar",
                     },
                     {
@@ -37,7 +37,7 @@ export class news1617577996882 implements MigrationInterface {
         );
 
         queryRunner.query(
-            "INSERT INTO news (title, date, \"from\", link) values ('Teste #1', current_date, 'First migration', 'http://localhost:3333')"
+            "INSERT INTO news (title, date, origin, link) values ('Teste #1', current_date, 'First migration', 'http://localhost:3333')"
         );
     }
 

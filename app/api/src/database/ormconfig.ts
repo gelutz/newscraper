@@ -1,17 +1,16 @@
 import dotenv from "dotenv";
-import { SqliteConnectionOptions } from "typeorm/driver/sqlite/SqliteConnectionOptions";
 import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
 
 dotenv.config();
 
-const config: PostgresConnectionOptions = {
+const prodPostgres: PostgresConnectionOptions = {
     type: "postgres",
-    host: process.env.TEST_DB_HOST,
+    host: process.env.DB_HOST,
     port: 5432,
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
-    logging: false,
+    logging: "all",
     entities: ["src/models/*.{js,ts}"],
     migrations: ["src/database/migrations/**/*.ts"],
     cli: {
@@ -20,11 +19,15 @@ const config: PostgresConnectionOptions = {
     },
 };
 
-const testConfig: SqliteConnectionOptions = {
-    type: "sqlite",
-    logging: ["error"],
-    database: "src/_tests/safedb.sqlite",
-    entities: ["src/models/**/*.ts"],
+const testPostgres: PostgresConnectionOptions = {
+    type: "postgres",
+    host: process.env.DB_TEST_HOST,
+    port: 5432,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    logging: "all",
+    entities: ["src/models/*.{js,ts}"],
     migrations: ["src/database/migrations/**/*.ts"],
     cli: {
         entitiesDir: "src/models/",
@@ -32,4 +35,4 @@ const testConfig: SqliteConnectionOptions = {
     },
 };
 
-export { config, testConfig };
+export { prodPostgres, testPostgres };
