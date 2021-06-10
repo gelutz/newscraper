@@ -1,0 +1,20 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "outDir": "dist",
+        "rootDir": "./src",
+        "baseUrl": "./src",
+        "module": "commonjs",
+        "target": "es2015",
+        "sourceMap": true,
+        "strictNullChecks": true,
+        "noImplicitAny": false,
+        "preserveConstEnums": true,
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "include": ["src/**/*.ts"],
+    "exclude": ["node_modules", "dist", "src/_test"]
+}

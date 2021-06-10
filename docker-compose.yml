@@ -3,18 +3,18 @@ version: "3.7"
 services:
     api:
         build:
-            context: ./app/api/
+            context: ./app/server/
             target: ${TARGET}
         container_name: api
         env_file:
-            - ./app/api/.env
+            - ./app/server/.env
         depends_on:
             - db
         ports:
             - ${SERVER_PORT}:${SERVER_PORT}
             - ${DEBUG_PORT}:${DEBUG_PORT}
         volumes:
-            - ./app/api/src:/usr/app/api/src
+            - ./app/server/src:/usr/app/server/src
         command: ["npm", "run", "dev"]
 
         # logging:
