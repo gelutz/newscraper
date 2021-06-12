@@ -36,6 +36,7 @@ export class news1617577996882 implements MigrationInterface {
             })
         );
 
+        /** TODO: REMOVE IN PRODUCTION */
         queryRunner.query(
             "INSERT INTO news (title, date, origin, link) values ('Teste #1', current_date, 'First migration', 'http://localhost:3333')"
         );

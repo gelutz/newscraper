@@ -16,8 +16,8 @@ export async function connect(): Promise<Connection> {
     }
 
     try {
-        // const c = testPostgres;
-        const c = process.env.NODE_ENV === "test" ? testPostgres : prodPostgres;
+        const c = testPostgres;
+        // const c = process.env.NODE_ENV === "test" ? testPostgres : prodPostgres;
         connection = await createConnection(c);
     } catch (e) {
         console.error(e);

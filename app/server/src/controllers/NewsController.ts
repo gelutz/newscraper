@@ -43,7 +43,7 @@ class NewsController {
         }
     }
 
-    async readById(req: Request, res: Response) {
+    async getById(req: Request, res: Response) {
         const repository = getCustomRepository(NewsRepository);
         const id = req.params.id;
 
