@@ -1,7 +1,7 @@
 import express from "express";
 
 import * as connection from "./database/connection";
-import Routes from "./routes";
+import Routes from "./routes/";
 // connects to database
 const app = express();
 
