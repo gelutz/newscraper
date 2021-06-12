@@ -9,7 +9,7 @@ COPY package.json tsconfig.json ./
 # COPY package-lock.json ./
 
 # necessary
-RUN npm install react-scripts@3.4.1 -g --silent
+# RUN npm install react-scripts@3.4.1 -g --silent
 RUN npm install --quiet --unsafe-perm --no-progress --only=production
 
 FROM prod as development

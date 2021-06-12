@@ -1,26 +1,21 @@
 {
   "env": {
-      "es2020": true,
-      "node": true,
-      "jest": true
+    "es2020": true,
+    "node": true,
+    "jest": true
   },
-  "extends": [
-      "standard",
-      "eslint:recommended"
-  ],
+  "extends": ["standard", "eslint:recommended"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-      "ecmaVersion": 11,
-      "sourceType": "module"
+    "ecmaVersion": 11,
+    "sourceType": "module"
   },
-  "plugins": [
-      "@typescript-eslint"
-  ],
+  "plugins": ["@typescript-eslint"],
   "rules": {
-      "semi": "off",
-      "indent": ["error", 4],
-      "quotes": ["error", "double"],
-      "comma-dangle": "off",
-      "space-before-function-paren": "off"
+    "semi": "off",
+    "indent": ["error", 4],
+    "quotes": ["error", "double"],
+    "comma-dangle": "off",
+    "space-before-function-paren": "off"
   }
 }
