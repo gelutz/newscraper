@@ -20,6 +20,12 @@ export class Users1623520057673 implements MigrationInterface {
                         isNullable: false,
                     },
                     {
+                        name: "login",
+                        type: "varchar",
+                        length: "100",
+                        isNullable: false,
+                    },
+                    {
                         name: "email",
                         type: "varchar",
                         isNullable: false,
@@ -36,7 +42,7 @@ export class Users1623520057673 implements MigrationInterface {
 
         /** TODO: REMOVE IN PRODUCTION */
         queryRunner.query(
-            "INSERT INTO users (nome, email) values ('Hidden pygmy', 'maybe.manus@gmail.com', 'admin')"
+            "INSERT INTO users (nome, email, login, password) values ('Hidden pygmy', 'maybe.manus@gmail.com', 'pygmy', 'suckmydickartorias')"
         );
     }
 

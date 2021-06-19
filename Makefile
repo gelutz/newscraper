@@ -22,3 +22,5 @@ down:
 
 env:
 	if [ -f "./make_dotenv.sh" ]; then bash ./make_dotenv.sh; fi
+
+#

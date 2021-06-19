@@ -4,12 +4,12 @@ import { Switch } from "react-router-dom";
 import Route from "./Route";
 
 import Home from "../pages/Home";
-import Login from "../pages/Login";
+import Login from "../pages/Login/";
 
 function Routes() {
   return (
     <Switch>
-      <Route path="/" exact component={Home} />
+      <Route path="/" exact component={Home} isPrivate />
       <Route path="/login" component={Login} />
     </Switch>
   );

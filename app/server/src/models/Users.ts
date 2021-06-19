@@ -19,6 +19,9 @@ class Users {
     email: string;
 
     @Column()
+    login: string;
+
+    @Column()
     password: string;
 
     @BeforeInsert()
