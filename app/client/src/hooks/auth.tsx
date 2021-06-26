@@ -1,4 +1,6 @@
 import React, { createContext, useCallback, useState, useContext } from "react";
+import * as jwt from "jsonwebtoken";
+
 import connection from "../api/connection";
 
 interface AuthState {
@@ -25,7 +27,22 @@ const AuthProvider: React.FC = ({ children }) => {
     const user = localStorage.getItem("@Newscraper:user");
 
     if (token && user) {
-      return { token, user: JSON.parse(user) };
+      (async () => {
+        jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
+          if (err instanceof Error) {
+            console.log(err);
+            return;
+          }
+
+          if (!decoded?.iat || !decoded?.exp) {
+            return;
+          }
+
+          if (Math.round(Date.now() / 1000) - decoded.iat > decoded.exp) {
+            return { token, user: JSON.parse(user) };
+          }
+        });
+      })();
     }
 
     return {} as AuthState;
