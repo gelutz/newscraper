@@ -16,4 +16,4 @@ FROM prod as development
 
 RUN npm install --quiet --unsafe-perm --no-progress --only=development
 
-EXPOSE 3001
+EXPOSE 3000
