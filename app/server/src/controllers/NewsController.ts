@@ -43,6 +43,22 @@ class NewsController {
         }
     }
 
+    async search(req: Request, res: Response) {
+        const repository = getCustomRepository(NewsRepository);
+        const { query } = req;
+
+        try {
+            const returned = await repository.ilike({
+                title: query.title as string,
+            });
+
+            return res.status(201).send(returned);
+        } catch (error) {
+            console.log("Erro:", error.message);
+            return res.status(404).send({ name: error.name });
+        }
+    }
+
     async getById(req: Request, res: Response) {
         const repository = getCustomRepository(NewsRepository);
         const id = req.params.id;

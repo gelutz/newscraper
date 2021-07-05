@@ -4,3 +4,5 @@
 .log.md
 **/coverage
 .vscode/
+
+app/server/src/config/.jwt-key*

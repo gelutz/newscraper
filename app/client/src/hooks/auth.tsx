@@ -1,5 +1,4 @@
 import React, { createContext, useCallback, useState, useContext } from "react";
-import * as jwt from "jsonwebtoken";
 
 import connection from "../api/connection";
 
@@ -27,29 +26,16 @@ const AuthProvider: React.FC = ({ children }) => {
     const user = localStorage.getItem("@Newscraper:user");
 
     if (token && user) {
-      (async () => {
-        jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
-          if (err instanceof Error) {
-            console.log(err);
-            return;
-          }
-
-          if (!decoded?.iat || !decoded?.exp) {
-            return;
-          }
-
-          if (Math.round(Date.now() / 1000) - decoded.iat > decoded.exp) {
-            return { token, user: JSON.parse(user) };
-          }
-        });
-      })();
+      // descomentar quando for adicionado o middleware de autenticação no backend
+      connection.defaults.headers.authorization = `Bearer ${token}`;
+      return { token, user: JSON.parse(user) };
     }
 
     return {} as AuthState;
   });
 
   const signIn = useCallback(async ({ login, password }) => {
-    const response = await connection.post("/users/auth", {
+    const response = await connection.post("/auth", {
       login,
       password,
     });
@@ -57,6 +43,9 @@ const AuthProvider: React.FC = ({ children }) => {
     const { token, user } = response.data;
 
     delete user.password;
+    // descomentar quando for adicionado o middleware de autenticação no backend
+    connection.defaults.headers.authorization = `Bearer ${token}`;
+
     localStorage.setItem("@Newscraper:token", token);
     localStorage.setItem("@Newscraper:user", JSON.stringify(user));
 

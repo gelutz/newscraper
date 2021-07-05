@@ -9,6 +9,7 @@ interface TokenPayload {
     exp: number;
 }
 
+// TODO: adicionar validação de tempo usando os atributos iat e exp
 export default function authMiddleware(
     req: Request,
     res: Response,
@@ -23,7 +24,7 @@ export default function authMiddleware(
     const token = authorization.replace("Bearer", "").trim();
 
     try {
-        const data = jwt.verify(token, process.env.JWT_SECRET!);
+        const data = jwt.verify(token, process.env.JWT_KEY!);
 
         const { id } = data as TokenPayload;
 

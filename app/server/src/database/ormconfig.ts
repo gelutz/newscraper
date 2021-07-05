@@ -10,7 +10,7 @@ const prodPostgres: PostgresConnectionOptions = {
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
-    logging: "all",
+    logging: ["error"],
     entities: ["src/models/*.{js,ts}"],
     migrations: ["src/database/migrations/**/*.ts"],
     cli: {

@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+
 import { getCustomRepository } from "typeorm";
 
 import { UsersRepository } from "../repositories/UsersRepository";
@@ -34,10 +35,7 @@ class UsersController {
 
             return res.status(status).send({ ...returned });
         } catch (error) {
-            console.log("Erro:", error.message);
-            return res
-                .status(404)
-                .send({ name: error.name ?? "An error ocurred." });
+            throw new Error(error.name);
         }
     }
 
