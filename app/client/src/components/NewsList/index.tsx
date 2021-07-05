@@ -4,7 +4,6 @@ import NewsCard from "../NewsCard";
 // import { Container } from './styles';
 
 const NewsList: React.FC<{ news: News[] }> = ({ news }) => {
-  console.log(news);
   return (
     <div className="flex flex-col">
       <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">

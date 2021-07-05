@@ -5,6 +5,7 @@ import { AxiosRequestConfig } from "axios";
 import News from "../../@types/News";
 import connection from "../../api/connection";
 import NewsList from "../../components/NewsList";
+import Header from "../../components/Header";
 
 // import { Container } from "./styles";
 
@@ -48,26 +49,17 @@ const Home: React.FC = () => {
 
   return (
     <div className="p-8 bg-gray-900 shadow h-full">
-      <header className="p-8 bg-gray-500 shadow-xl flex justify-between rounded-2xl">
-        <div className="whitespace w-10"></div>
-        <div className="searchbox">
-          <div className="box bg-white-300 p-2 flex align-middle">
-            <form onSubmit={onSearch}>
-              <input
-                {...register("search", { required: false })}
-                type="text"
-                name="search"
-                id="search"
-              />
-            </form>
-          </div>
-        </div>
-        <div className="media">
-          <div className="h-10 rounded-2xl"></div>
-          <div className="h-10 rounded-2xl"></div>
-          <div className="h-10 rounded-2xl"></div>
-        </div>
-      </header>
+      <Header>
+        <form onSubmit={onSearch}>
+          <input
+            {...register("search", { required: false })}
+            type="text"
+            className="w-full py-3 pl-10 pr-4 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+            placeholder="Search"
+            id="search"
+          />
+        </form>
+      </Header>
       <div className="list w-full mt-8 bg-gray-600">
         <NewsList news={news} />
       </div>
