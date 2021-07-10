@@ -1,0 +1,11 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "name": "newscraper-test",
+      "database": "${workspaceFolder:newscraper}/app/api/src/_tests/safedb.sqlite"
+    }
+  ],
+  "sqltools.useNodeRuntime": true
+}

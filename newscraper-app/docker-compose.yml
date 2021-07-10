@@ -52,6 +52,6 @@ services:
       - ./app/client/:/usr/app/client/
     command: ["npm", "run", "start"]
     environment:
-      CHOKIDAR_USEPOLLING: "true" # seems like this enables hot reloading
+      CHOKIDAR_USEPOLLING: "true" # seems like this enables hot reloading https://stackoverflow.com/questions/44643045/running-development-server-with-create-react-app-inside-of-a-docker-container
     links:
       - server
