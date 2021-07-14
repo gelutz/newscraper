@@ -55,3 +55,20 @@ services:
       CHOKIDAR_USEPOLLING: "true" # seems like this enables hot reloading https://stackoverflow.com/questions/44643045/running-development-server-with-create-react-app-inside-of-a-docker-container
     links:
       - server
+
+  webscraper:
+    build:
+      context: ./app/webscraper
+      target: ${TARGET}
+
+    container_name: webscraper
+    depends_on:
+      - server
+    ports:
+      - ${SERVICE_PORT}:${SERVICE_PORT}
+    volumes:
+      - /app/webscraper/node_modules
+      - ./app/webscraper/:/usr/app/webscraper
+    command: ["npm", "run", "dev"]
+    links:
+      - server
