@@ -7,20 +7,21 @@ class SearchNewsController {
         const news = await ycombinator.search();
 
         const newsRepository = new NewsRepository();
-        let enviadas = 0;
+        let quantEnviadas = 0;
 
         try {
-            for (let index = 0; index < news.length; index++) {
-                enviadas++;
-                console.log(enviadas);
-                await newsRepository.save(news[index]);
+            for (const New of news) {
+                quantEnviadas++;
+                console.log(quantEnviadas);
+                await newsRepository.save(New);
             }
 
             response.status(201).send({
-                message: `Script rodou sem problemas. ${enviadas} notícias enviadas.`,
+                message: `Script rodou sem problemas. ${quantEnviadas} notícias enviadas.`,
             });
         } catch (err) {
-            response.status(500).send({ ...err });
+            console.error(err);
+            response.status(500).send(err);
         }
     }
 }

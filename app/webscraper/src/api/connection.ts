@@ -5,6 +5,6 @@ dotenv.config();
 
 // host "server" é o nome do container do backend no docker-compose
 const api = axios.create({
-    baseURL: `server:${process.env.SERVER_PORT}`,
+    baseURL: `http://server:${process.env.SERVER_PORT}`,
 });
 export { api };
