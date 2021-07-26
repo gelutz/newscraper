@@ -1,8 +1,8 @@
-import express from "express";
+// import "express-async-errors";
+import express, { Request, Response } from "express";
 
 import * as connection from "./database/connection";
 import Routes from "./routes/";
-import errorHandler from "./middlewares/ErrorHandler";
 
 import cors from "cors";
 // connects to database
@@ -12,12 +12,21 @@ app.use(cors());
 app.use(express.json());
 app.use(Routes);
 
-// app.use(errorHandler);
+// handling errors
+// app.use((err: Error, _: Request, res: Response) => {
+//     if (err instanceof Error) {
+//         return res.status(404).send({
+//             name: err.name,
+//             message: err.message,
+//         });
+//     }
+//     console.error(err);
+//     return res.status(500).send({ message: "Internal server error" });
+// });
 
-connection.connect().then((connection) => {
-    connection.runMigrations();
-
-    const port = 3333;
+// waits for db connection and migrations to run, and starts the server
+connection.start().then(() => {
+    const port = process.env.SERVER_PORT;
     app.listen(port, () => console.log(`Server running at port ${port}`));
 });
 

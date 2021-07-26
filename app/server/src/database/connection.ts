@@ -6,9 +6,25 @@ import {
 } from "typeorm";
 
 import { prodPostgres, testPostgres } from "./ormconfig";
-// import News from "../models/News";
 
 let connection: Connection;
+
+export async function start(): Promise<Boolean> {
+    if (connection) {
+        throw new CannotConnectAlreadyConnectedError("default");
+    }
+
+    try {
+        const c = process.env.DB_TEST_HOST ? testPostgres : prodPostgres;
+        connection = await createConnection(c);
+        connection.runMigrations();
+
+        return true;
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+}
 
 export async function connect(): Promise<Connection> {
     if (connection) {
@@ -34,4 +50,3 @@ export async function disconnect(): Promise<void> {
 }
 
 export { connection };
-// export async function getNewsRepository() {}
