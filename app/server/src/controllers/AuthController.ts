@@ -3,6 +3,7 @@ import { getRepository } from "typeorm";
 import jwt from "jsonwebtoken";
 import { config } from "dotenv";
 
+import bcrypt from "bcrypt";
 import User from "../models/Users";
 
 config();
@@ -18,8 +19,7 @@ class AuthController {
             return res.sendStatus(401);
         }
 
-        // const isValidPassword = await bcrypt.compare(password, user.password);
-        const isValidPassword = password === user.password;
+        const isValidPassword = await bcrypt.compare(password, user.password);
         if (!isValidPassword) {
             return res.sendStatus(401);
         }

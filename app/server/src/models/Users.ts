@@ -5,7 +5,7 @@ import {
     Entity,
     PrimaryGeneratedColumn,
 } from "typeorm";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 
 @Entity("users")
 class Users {

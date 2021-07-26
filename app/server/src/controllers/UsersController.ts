@@ -10,7 +10,7 @@ class UsersController {
 
         const data = { ...req.body };
         try {
-            const created = await repository.save(data);
+            const created = await repository.saveHashed(data);
 
             return res.status(201).send({ ...created });
         } catch (error) {
