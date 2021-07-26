@@ -39,11 +39,6 @@ export class Users1623520057673 implements MigrationInterface {
                 ],
             })
         );
-
-        /** TODO: REMOVE IN PRODUCTION */
-        queryRunner.query(
-            "INSERT INTO users (nome, email, login, password) values ('Hidden pygmy', 'maybe.manus@gmail.com', 'pygmy', 'suckmydickartorias')"
-        );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
