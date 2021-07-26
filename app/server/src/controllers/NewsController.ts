@@ -8,7 +8,7 @@ class NewsController {
 
     async create(req: Request, res: Response) {
         const repository = getCustomRepository(NewsRepository);
-        console.log(req);
+
         const data = { ...req.body };
         try {
             const created = await repository.createAndSave(data);

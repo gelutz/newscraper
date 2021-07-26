@@ -1,14 +1,15 @@
-import AuthController from "../controllers/AuthController";
 import { Router } from "express";
-import authMiddleware from "../middlewares/AuthMiddleware";
+
+import AuthController from "../controllers/AuthController";
 
 import newsRoute from "./News";
 import usersRoute from "./Users";
+
 const routes = Router();
 
-routes.use("/news", newsRoute);
-routes.use("/users", [authMiddleware], usersRoute);
-
 routes.post("/auth", AuthController.authenticate);
+
+routes.use("/news", newsRoute);
+routes.use("/users", usersRoute);
 
 export default routes;

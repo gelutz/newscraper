@@ -2,10 +2,10 @@ import { Router } from "express";
 
 import UsersController from "../../controllers/UsersController";
 
-const newsRoute = Router();
+const usersRoute = Router();
 
-newsRoute.get("/:id", UsersController.getById);
-newsRoute.post("/", UsersController.create);
-newsRoute.patch("/:id", UsersController.update);
+usersRoute.get("/:id", UsersController.getById);
+usersRoute.post("/", UsersController.create);
+usersRoute.patch("/:id", UsersController.update);
 
-export default newsRoute;
+export default usersRoute;

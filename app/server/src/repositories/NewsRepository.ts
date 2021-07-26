@@ -9,11 +9,6 @@ import {
 } from "typeorm";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
-export interface NewsQuery extends Partial<News> {
-    title: string;
-    link: string;
-}
-
 @EntityRepository(News)
 export class NewsRepository extends Repository<News> {
     // Usa a expressão ILIKE do postgres
@@ -47,7 +42,7 @@ export class NewsRepository extends Repository<News> {
         }
     }
 
-    async createAndSave(o: NewsQuery): Promise<News> {
+    async createAndSave(o: Partial<News>): Promise<News> {
         if (!o.title || !o.link) {
             throw Error(
                 `Missing arguments:
@@ -72,8 +67,8 @@ export class NewsRepository extends Repository<News> {
         return saved;
     }
 
-    async insertMany(data: NewsQuery[]): Promise<InsertResult> {
-        const toBeInserted: Partial<NewsQuery>[] = [];
+    async insertMany(data: Partial<News>[]): Promise<InsertResult> {
+        const toBeInserted: Partial<Partial<News>>[] = [];
 
         data.forEach((newsInsert) => {
             const tmp = {};
