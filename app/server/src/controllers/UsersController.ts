@@ -55,16 +55,14 @@ class UsersController {
 
     async delete(req: Request, res: Response) {
         const repository = getCustomRepository(UsersRepository);
-        const { id } = req.body;
+        const { id } = req.params;
 
         try {
             const data = await repository.delete({ id });
 
             return res.send({ ...data });
         } catch (error) {
-            return res
-                .status(500)
-                .send({ name: error.name, message: error.message });
+            return res.status(500).send({ ...error });
         }
     }
 }
