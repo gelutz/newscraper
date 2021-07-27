@@ -12,7 +12,7 @@ import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity
 @EntityRepository(News)
 export class NewsRepository extends Repository<News> {
     // Usa a expressão ILIKE do postgres
-    // e adiciona %% no início e
+    // e adiciona %% no início e fim das strings
     async ilike(
         data: Partial<News>,
         columns: string[] = ["id", "title", "link", "origin", "date"]
