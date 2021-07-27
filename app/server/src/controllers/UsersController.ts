@@ -41,15 +41,17 @@ class UsersController {
 
     async update(req: Request, res: Response) {
         const repository = getCustomRepository(UsersRepository);
-        const { id } = req.params;
         const newValues = { ...req.body };
+        const { id } = req.params;
 
         try {
-            const data = await repository.update({ id }, newValues);
+            const data = await repository.updateOne({ id }, newValues);
 
             return res.send({ ...data });
         } catch (error) {
             console.error(error);
+
+            return res.send({ ...error });
         }
     }
 
