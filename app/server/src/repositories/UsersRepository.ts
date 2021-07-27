@@ -15,4 +15,5 @@ export class UsersRepository extends Repository<Users> {
 
         return saved;
     }
+        });
 }

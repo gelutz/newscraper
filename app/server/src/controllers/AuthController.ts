@@ -1,37 +1,36 @@
 import { Request, Response } from "express";
-import { getRepository } from "typeorm";
-import jwt from "jsonwebtoken";
+import { getCustomRepository } from "typeorm";
 import { config } from "dotenv";
 
 import bcrypt from "bcrypt";
-import User from "../models/Users";
+import { UsersRepository } from "../repositories/UsersRepository";
 
 config();
 
 class AuthController {
     async authenticate(req: Request, res: Response) {
-        const repository = getRepository(User);
         const { login, password } = req.body;
 
-        const user = await repository.findOne({ where: { login } });
+        const repository = getCustomRepository(UsersRepository);
 
-        if (!user?.password) {
-            return res.sendStatus(401);
+        const user = await repository.findOne({ login });
+        if (!user) {
+            return res.status(404).send({ message: "User not found" });
         }
 
         const isValidPassword = await bcrypt.compare(password, user.password);
+
         if (!isValidPassword) {
-            return res.sendStatus(401);
+            return res.status(404).send({ message: "Unvalid password" });
         }
 
-        const token = jwt.sign({ id: user.id }, process.env.JWT_KEY!, {
-            expiresIn: "1h",
-        });
+        try {
+            const token = await repository.generateToken({ login });
 
-        return res.json({
-            user,
-            token,
-        });
+            return res.send({ token, login });
+        } catch (err) {
+            return res.send(err);
+        }
     }
 }
 
