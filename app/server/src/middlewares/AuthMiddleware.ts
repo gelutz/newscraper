@@ -3,11 +3,6 @@ import jwt from "jsonwebtoken";
 import { config } from "dotenv";
 
 config();
-interface TokenPayload {
-    id: string;
-    iat: number;
-    exp: number;
-}
 
 // TODO: adicionar validação de tempo usando os atributos iat e exp
 export default function authMiddleware(
@@ -24,14 +19,9 @@ export default function authMiddleware(
     const token = authorization.replace("Bearer", "").trim();
 
     try {
-        const data = jwt.verify(token, process.env.JWT_KEY!);
-
-        const { id } = data as TokenPayload;
-
-        req.body.userId = id;
-
+        jwt.verify(token, process.env.JWT_KEY!);
         return next();
-    } catch {
-        return res.sendStatus(401);
+    } catch (error) {
+        res.status(401).send({ message: "Token invalid." });
     }
 }
