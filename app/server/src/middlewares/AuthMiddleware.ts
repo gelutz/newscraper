@@ -18,10 +18,6 @@ export default function authMiddleware(
 
     const token = authorization.replace("Bearer", "").trim();
 
-    try {
-        jwt.verify(token, process.env.JWT_KEY!);
-        return next();
-    } catch (error) {
-        res.status(401).send({ message: "Token invalid." });
-    }
+    jwt.verify(token, process.env.JWT_KEY!);
+    return next();
 }

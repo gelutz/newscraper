@@ -56,19 +56,19 @@ services:
     links:
       - server
 
-  webscraper:
-    build:
-      context: ./app/webscraper
-      target: ${TARGET}
+  # webscraper:
+  #   build:
+  #     context: ./app/webscraper
+  #     target: ${TARGET}
 
-    container_name: webscraper
-    depends_on:
-      - server
-    ports:
-      - ${SERVICE_PORT}:${SERVICE_PORT}
-    volumes:
-      - /app/webscraper/node_modules
-      - ./app/webscraper/:/usr/app/webscraper
-    command: ["npm", "run", "dev"]
-    links:
-      - server
+  #   container_name: webscraper
+  #   depends_on:
+  #     - server
+  #   ports:
+  #     - ${SERVICE_PORT}:${SERVICE_PORT}
+  #   volumes:
+  #     - /app/webscraper/node_modules
+  #     - ./app/webscraper/:/usr/app/webscraper
+  #   command: ["npm", "run", "dev"]
+  #   links:
+  #     - server

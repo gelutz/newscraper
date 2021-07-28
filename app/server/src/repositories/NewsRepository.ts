@@ -35,11 +35,7 @@ export class NewsRepository extends Repository<News> {
             qb.where(`${c} = :${c}`, data);
         });
 
-        try {
-            return await qb.execute();
-        } catch (error) {
-            throw Error(error);
-        }
+        return await qb.execute();
     }
 
     async createAndSave(o: Partial<News>): Promise<News> {
@@ -52,17 +48,11 @@ export class NewsRepository extends Repository<News> {
         }
         const New = this.create();
 
-        let saved: News;
-
         this.metadata.columns.forEach((v) => {
             New[v.propertyName] = o[v.propertyName];
         });
 
-        try {
-            saved = await this.save(New);
-        } catch (error) {
-            throw Error(error);
-        }
+        const saved: News = await this.save(New);
 
         return saved;
     }

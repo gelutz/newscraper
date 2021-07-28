@@ -24,13 +24,8 @@ class AuthController {
             return res.status(404).send({ message: "Unvalid password" });
         }
 
-        try {
-            const token = await repository.generateToken({ login });
-
-            return res.send({ token, login });
-        } catch (err) {
-            return res.send(err);
-        }
+        const token = await repository.generateToken({ login });
+        return res.send({ token, login });
     }
 }
 
