@@ -2,6 +2,7 @@ import Users from "../models/Users";
 import { EntityRepository, Repository } from "typeorm";
 
 import * as jwt from "jsonwebtoken";
+import NotFoundError from "../errors/NotFoundError";
 
 @EntityRepository(Users)
 export class UsersRepository extends Repository<Users> {
@@ -12,7 +13,7 @@ export class UsersRepository extends Repository<Users> {
         const user = await this.findOne(criteria);
 
         if (!user) {
-            throw new Error("User not found");
+            throw new NotFoundError();
         }
 
         Object.assign(user, values);
@@ -30,8 +31,8 @@ export class UsersRepository extends Repository<Users> {
         return saved;
     }
 
-    async generateToken({ login }): Promise<string> {
-        const token = jwt.sign({ login: login }, process.env.JWT_KEY!, {
+    async generateToken({ ...payload }): Promise<string> {
+        const token = jwt.sign({ ...payload }, process.env.JWT_KEY!, {
             expiresIn: "1h",
         });
 
