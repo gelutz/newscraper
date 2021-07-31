@@ -11,8 +11,13 @@ describe("Testing route: /", () => {
 
     beforeAll(async (done) => {
         try {
-            await connectionManager.connect();
-            await connectionManager.connection.runMigrations();
+            await connectionManager.start();
+            const repo = getCustomRepository(NewsRepository);
+            await repo.createAndSave({
+                title: "Teste #1",
+                link: "localhost:3000/teste",
+            });
+
             done();
         } catch (error) {
             done(error);
@@ -36,7 +41,7 @@ describe("Testing route: /", () => {
         // theres an insert in the first migration file that creates this object
         const existingData: Partial<News> = {
             id: 1,
-            title: "t",
+            title: "Teste #1",
         };
 
         const nonExistingData: Partial<News> = {
@@ -180,6 +185,6 @@ describe("Testing route: /", () => {
             title: "F",
         };
 
-        it("should update and return ")
+        it("should update and return ");
     });
 });
