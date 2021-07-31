@@ -12,7 +12,6 @@ services:
       - db
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
-      - ${DEBUG_PORT}:${DEBUG_PORT}
     volumes:
       - ./app/server/src:/usr/app/server/src
     command: ["npm", "run", "dev"]
