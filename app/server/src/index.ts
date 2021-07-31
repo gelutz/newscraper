@@ -1,28 +1,18 @@
 import "express-async-errors";
-import express, { NextFunction, Request, Response } from "express";
+import cors from "cors";
+import express from "express";
 
 import * as connection from "./database/connection";
 import Routes from "./routes/";
+import { errorHandler } from "./middlewares/ErrorMiddleware";
 
-import cors from "cors";
-// connects to database
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(Routes);
 
-// handling errors
-app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
-    if (err instanceof Error) {
-        return res.status(404).send({
-            name: err.name,
-            message: err.message,
-        });
-    }
-    console.error(err);
-    return res.status(500).send({ message: "Internal server error" });
-});
+app.use(errorHandler);
 
 // waits for db connection and migrations to run, and starts the server
 connection.start().then(() => {
