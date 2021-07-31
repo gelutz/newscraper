@@ -1,7 +1,8 @@
-folders=($(tree -fri --noreport -L 1  ./app/))
+folders=($(ls ./app))
 
+# shouldnt copy to ./app/client
 for f in ${folders[@]:1}
 do
-    echo "Creating symbolic link $f"
-    cp "$(pwd)/.env" "$f/"
+    cp "$(pwd)/.env" "./app/$f/"
+    echo "Copying to $f"
 done
