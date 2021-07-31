@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { config } from "dotenv";
+import UnauthorizedError from "../errors/UnauthorizedError";
 
 config();
 
 // TODO: adicionar validação de tempo usando os atributos iat e exp
-export default function authMiddleware(
+export function isAuthenticated(
     req: Request,
     res: Response,
     next: NextFunction
@@ -17,7 +18,13 @@ export default function authMiddleware(
     }
 
     const token = authorization.replace("Bearer", "").trim();
+    try {
+        jwt.verify(token, process.env.JWT_KEY!);
+    } catch (error) {
+        if (error instanceof jwt.JsonWebTokenError) {
+            throw new UnauthorizedError();
+        }
+    }
 
-    jwt.verify(token, process.env.JWT_KEY!);
     return next();
 }
