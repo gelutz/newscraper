@@ -1,10 +1,10 @@
 import request from "supertest";
 import { getCustomRepository } from "typeorm";
 
-import News from "models/News";
+import News from "../models/News";
 import { app } from "../index";
 import { NewsRepository } from "../repositories/NewsRepository";
-import * as connectionManager from "../database/connection";
+import * as connectionManager from "../database/postgresql/client";
 
 describe("Testing route: /", () => {
     const path = "/";

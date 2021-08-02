@@ -1,7 +1,6 @@
 import Users from "../models/Users";
 import { EntityRepository, Repository } from "typeorm";
 
-import * as jwt from "jsonwebtoken";
 import NotFoundError from "../errors/NotFoundError";
 
 @EntityRepository(Users)
@@ -29,13 +28,5 @@ export class UsersRepository extends Repository<Users> {
         delete saved.password;
 
         return saved;
-    }
-
-    async generateToken({ ...payload }): Promise<string> {
-        const token = jwt.sign({ ...payload }, process.env.JWT_KEY!, {
-            expiresIn: "1h",
-        });
-
-        return token;
     }
 }

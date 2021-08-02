@@ -2,8 +2,11 @@ import "express-async-errors";
 import cors from "cors";
 import express from "express";
 
-import * as connection from "./database/connection";
+import * as postgresClient from "./database/postgresql/client";
+import * as redisClient from "./database/redis/client";
+
 import Routes from "./routes/";
+
 import { errorHandler } from "./middlewares/ErrorMiddleware";
 
 const app = express();
@@ -14,8 +17,9 @@ app.use(Routes);
 
 app.use(errorHandler);
 
-// waits for db connection and migrations to run, and starts the server
-connection.start().then(() => {
+redisClient.start();
+
+postgresClient.start().then(() => {
     const port = process.env.SERVER_PORT;
     app.listen(port, () => console.log(`Server running at port ${port}`));
 });

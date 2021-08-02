@@ -4,6 +4,7 @@ import { config } from "dotenv";
 
 import bcrypt from "bcrypt";
 import { UsersRepository } from "../repositories/UsersRepository";
+import { generateToken } from "../utils/token";
 
 config();
 
@@ -24,7 +25,7 @@ class AuthController {
             return res.status(404).send({ message: "Unvalid password" });
         }
 
-        const token = await repository.generateToken({ login });
+        const token = await generateToken({ login });
         return res.send({ token, login });
     }
 }
