@@ -4,24 +4,31 @@ services:
   server:
     build:
       context: ./app/server/
-      target: ${TARGET}
+      target: ${DOCKER_TARGET}
     container_name: server
     env_file:
       - ./app/server/.env
     depends_on:
       - db
+      - redis
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
     volumes:
       - ./app/server/src:/usr/app/server/src
     command: ["npm", "run", "dev"]
 
-    # logging:
-    #     driver: "json-file"
-    #     options:
-    #         max-size: "10m"
-    #         max-file: "5"
-
+##
+  redis:
+    image: docker.io/bitnami/redis:6.2
+    container_name: redis
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    volumes:
+      - redis_data:/bitnami/redis/data
+##
   db:
     image: postgres:alpine
     container_name: db
@@ -35,13 +42,17 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       PSOTGRES_USER: ${DB_USER}
 
+    volumes:
+      - $HOME/dev/ts/newscraper/app/server/database/postgresql/data:/var/lib/postresql/data
+
+##
   client:
     build:
       context: ./app/client
-      target: ${TARGET}
+      target: ${DOCKER_TARGET}
     container_name: client
     env_file:
-      - ./app/client/.env
+      - ./.env
     depends_on:
       - server
     ports:
@@ -55,19 +66,25 @@ services:
     links:
       - server
 
-  # webscraper:
-  #   build:
-  #     context: ./app/webscraper
-  #     target: ${TARGET}
+##
+  webscraper:
+    build:
+      context: ./app/webscraper
+      target: ${DOCKER_TARGET}
 
-  #   container_name: webscraper
-  #   depends_on:
-  #     - server
-  #   ports:
-  #     - ${SERVICE_PORT}:${SERVICE_PORT}
-  #   volumes:
-  #     - /app/webscraper/node_modules
-  #     - ./app/webscraper/:/usr/app/webscraper
-  #   command: ["npm", "run", "dev"]
-  #   links:
-  #     - server
+    container_name: webscraper
+    depends_on:
+      - server
+    ports:
+      - ${SERVICE_PORT}:${SERVICE_PORT}
+    volumes:
+      - /app/webscraper/node_modules
+      - ./app/webscraper/:/usr/app/webscraper
+    command: ["npm", "run", "dev"]
+    links:
+      - server
+
+##
+volumes:
+  redis_data:
+    driver: local
