@@ -6,7 +6,7 @@
 .vscode/
 
 # backup volumes
-./app/server/src/database/postgresql/data
-./app/server/src/database/redis/data
+./app/server/src/database/postgresql/data/*
+./app/server/src/database/redis/data/*
 
 ./tilixConfig.json
