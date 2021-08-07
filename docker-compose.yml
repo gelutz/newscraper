@@ -6,6 +6,8 @@ services:
       context: ./app/server/
       target: ${DOCKER_TARGET}
     container_name: server
+    env_file:
+      - ./app/server/.env
     depends_on:
       - db
       - redis
@@ -28,7 +30,7 @@ services:
     ports:
       - ${REDIS_PORT}:${REDIS_PORT}
     volumes:
-      - ./app/server/src/database/redis/data:/bitnami/redis/data
+      - redis:/bitnami/redis/data
 ##
   db:
     image: postgres:alpine
@@ -44,7 +46,7 @@ services:
       PSOTGRES_USER: ${DB_USER}
 
     volumes:
-      - $HOME/dev/ts/newscraper/app/server/database/postgresql/data:/var/lib/postresql/data
+      - postgres:/var/lib/postresql/data
 
 ##
 #   client:
@@ -86,3 +88,8 @@ services:
 #       - server
 
 ##
+
+volumes:
+  postgres:
+
+  redis:

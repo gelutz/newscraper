@@ -21,7 +21,7 @@ function connect(): CustomRedisClient {
     const options = {
         host: "redis",
         port: +process.env.REDIS_PORT!,
-        password: process.env.REDIS_PASSWORD,
+        // password: process.env.REDIS_PASSWORD,
     };
     const syncClient = redis.createClient(options);
     client = asyncClient(syncClient);

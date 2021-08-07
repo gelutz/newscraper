@@ -2,8 +2,8 @@ import "express-async-errors";
 import cors from "cors";
 import express from "express";
 
-import * as postgresClient from "./database/postgresql/client";
-import * as redisClient from "./database/redis/client";
+import * as postgresClient from "./database/connections/postgres";
+import * as redisClient from "./database/connections/redis";
 
 import Routes from "./routes/";
 

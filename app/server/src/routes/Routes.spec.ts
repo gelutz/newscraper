@@ -4,7 +4,7 @@ import { getCustomRepository } from "typeorm";
 import News from "../models/News";
 import { app } from "../index";
 import { NewsRepository } from "../repositories/NewsRepository";
-import * as connectionManager from "../database/postgresql/client";
+import * as connectionManager from "../database/postgres";
 
 describe("Testing route: /", () => {
     const path = "/";

@@ -5,7 +5,7 @@ import {
     createConnection,
 } from "typeorm";
 
-import { prodPostgres, testPostgres } from "./ormconfig";
+import { prodPostgres, testPostgres } from "../../config/ormconfig";
 
 let connection: Connection;
 
@@ -15,7 +15,7 @@ export async function start(): Promise<Boolean> {
     }
 
     try {
-        const c = process.env.DB_TEST_HOST ? testPostgres : prodPostgres;
+        const c = process.env.NODE_ENV === "test" ? testPostgres : prodPostgres;
         connection = await createConnection(c);
         connection.runMigrations();
 

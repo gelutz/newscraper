@@ -24,5 +24,5 @@ export const errorHandler = (
 
     console.log(err);
 
-    return res.status(500).send({ message: "Internal server error" });
+    next(err);
 };
