@@ -17,6 +17,15 @@ down:
 
 .PHONY: env
 env:
-	if [ -f "./make_dotenv.sh" ]; then bash ./make_dotenv.sh; fi
+	for file in $$(ls --ignore=tmp ./app); do \
+        cp ".env" "./app/$$file/" && echo "Copying to $$file"; \
+    done
+#
 
+.PHONY: install
+install:
+	npm install; \
+	for file in $$(ls --ignore=tmp ./app); do \
+        echo "./app/$$file" && npm install ./app/$$file; \
+    done
 #
