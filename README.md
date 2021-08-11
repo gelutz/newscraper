@@ -6,17 +6,20 @@
 <a href="https://www.docker.com/" target="_blank"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original-wordmark.svg"  alt="docker" width="30" height="30"/> </a>
 </center>
 
-### This service runs 4 different containers:
+## Main commands:
+<h5>from the source dir:</h5>
+
+1. **make env** copies the .env in the root folder to all folders inside `app/`.
+
+2. **make install** runs `npm install` inside each folder in `app/`
+
+2. **make up** builds and starts all containers in the docker-compose file
+
+3.  **make down** takes down all running containers from the docker-compose file. Volumes are not removed.
+
+### This service runs 5 different containers:
 1. Front-end container, running React JS.
 2. Back-end container, running a Node JS api connected with the database.
 3. PostgreSQL database.
 4. Webscraper service, running a Node JS api that fetches the news through an API route.
-
-## Main commands:
-<h5>from the source dir:</h5>
-
-1. **make env** replicates the .env in the `src/` folder to all folders inside the `src/app/`, creating a symbolic link inside each folder.
-
-2. **make up** builds and starts all containers in the docker-compose file (client, server, webscraper and database)
-
-3.  **make down** takes down all running containers from the docker-compose file.
+5. Redis service with jwt token's allow/block lists.
