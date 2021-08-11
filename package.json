@@ -9,5 +9,10 @@
         "eslint-plugin-promise": "^4.3.1",
         "eslint-plugin-react": "^7.23.2",
         "prettier": "^2.2.1"
+    },
+    "dependencies": {
+        "client": "file:app/client",
+        "server": "file:app/server",
+        "webscraper": "file:app/webscraper"
     }
 }

@@ -4,6 +4,7 @@
 .log.md
 **/coverage
 .vscode/
+./tmp/*
 
 # backup volumes
 ./app/server/src/database/postgresql/data/*
