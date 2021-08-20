@@ -9,7 +9,7 @@ type CustomRedisClient = {
 
 let client: CustomRedisClient;
 
-export function start(): void {
+function start(): void {
     if (client) {
         throw new Error("Redis client already established");
     }
@@ -48,4 +48,4 @@ function asyncClient(client: redis.RedisClient): CustomRedisClient {
     return newClient;
 }
 
-export { client };
+export { client, start };
