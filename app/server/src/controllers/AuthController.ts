@@ -9,7 +9,7 @@ import { generateToken } from "../utils/token";
 config();
 
 class AuthController {
-    async authenticate(req: Request, res: Response) {
+    async login(req: Request, res: Response) {
         const { login, password } = req.body;
 
         const repository = getCustomRepository(UsersRepository);

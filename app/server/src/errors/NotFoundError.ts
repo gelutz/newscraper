@@ -5,9 +5,9 @@ export default class NotFoundError extends CustomError {
     readonly message: string;
     readonly name: string;
 
-    constructor() {
+    constructor(entidade) {
         super();
-        this.message = "O objeto não foi encontrato";
+        this.message = `${entidade} não foi encontrato`;
         this.name = "Not Found";
         this.status = 404;
     }
