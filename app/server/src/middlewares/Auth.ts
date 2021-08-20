@@ -17,7 +17,7 @@ export function isAuthenticated(
         return res.sendStatus(401);
     }
 
-    const token = authorization.replace("Bearer", "").trim();
+    const token = authorization.replace("Bearer", "");
     try {
         jwt.verify(token, process.env.JWT_KEY!);
     } catch (error) {
@@ -27,4 +27,17 @@ export function isAuthenticated(
     }
 
     return next();
+}
+
+export function refreshTokens(req: Request, _: Response, next: NextFunction) {
+    const { authorization } = req.headers;
+
+    if (authorization) {
+        next();
+    }
+
+    const token = authorization!.replace("Bearer ", "");
+    const data = jwt.decode(token);
+    // iat and shit
+    // if ()
 }

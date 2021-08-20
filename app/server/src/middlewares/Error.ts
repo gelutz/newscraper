@@ -23,6 +23,5 @@ export const errorHandler = (
     }
 
     console.log(err);
-
     next(err);
 };
