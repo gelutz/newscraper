@@ -2,12 +2,12 @@ import { Router } from "express";
 
 import AuthController from "../controllers/AuthController";
 
-import newsRoute from "./News";
-import usersRoute from "./Users";
+import newsRoute from "./news";
+import usersRoute from "./users";
 
 const routes = Router();
 
-routes.post("/auth", AuthController.authenticate);
+routes.post("/login", AuthController.login);
 
 routes.use("/news", newsRoute);
 routes.use("/users", usersRoute);
