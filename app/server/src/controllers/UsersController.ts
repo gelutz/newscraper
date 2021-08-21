@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-
 import { getCustomRepository } from "typeorm";
 
 import { UsersRepository } from "../repositories/UsersRepository";
@@ -32,7 +31,8 @@ class UsersController {
 
         const data = await repository.updateOne({ id }, newValues);
 
-        return res.send({ ...data });
+        // res.send({ ...data });
+        // res.sendStatus(204);
     }
 
     async delete(req: Request, res: Response) {
