@@ -12,7 +12,7 @@ export class UsersRepository extends Repository<Users> {
         const user = await this.findOne(criteria);
 
         if (!user) {
-            throw new NotFoundError();
+            throw new NotFoundError(Users);
         }
 
         Object.assign(user, values);
