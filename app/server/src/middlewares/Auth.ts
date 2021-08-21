@@ -2,42 +2,25 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { config } from "dotenv";
 import UnauthorizedError from "../errors/UnauthorizedError";
-
 config();
 
-// TODO: adicionar validação de tempo usando os atributos iat e exp
-export function isAuthenticated(
-    req: Request,
-    res: Response,
-    next: NextFunction
-) {
+export function requiredAuth(req: Request, _: Response, next: NextFunction) {
     const { authorization } = req.headers;
 
     if (!authorization) {
-        return res.sendStatus(401);
+        throw new UnauthorizedError();
     }
 
-    const token = authorization.replace("Bearer", "");
-    try {
-        jwt.verify(token, process.env.JWT_KEY!);
-    } catch (error) {
-        if (error instanceof jwt.JsonWebTokenError) {
-            throw new UnauthorizedError();
-        }
-    }
+    const token = authorization.replace("Bearer ", "");
+    jwt.verify(token, process.env.JWT_KEY!);
 
-    return next();
+    next();
 }
 
-export function refreshTokens(req: Request, _: Response, next: NextFunction) {
-    const { authorization } = req.headers;
-
-    if (authorization) {
+export function optionalAuth(req: Request, res: Response, next: NextFunction) {
+    if (req.headers.authorization) {
+        requiredAuth(req, res, next);
+    } else {
         next();
     }
-
-    const token = authorization!.replace("Bearer ", "");
-    const data = jwt.decode(token);
-    // iat and shit
-    // if ()
 }
