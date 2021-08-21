@@ -31,8 +31,7 @@ class UsersController {
 
         const data = await repository.updateOne({ id }, newValues);
 
-        // res.send({ ...data });
-        // res.sendStatus(204);
+        return res.status(204).send({ ...data });
     }
 
     async delete(req: Request, res: Response) {
