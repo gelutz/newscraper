@@ -1,6 +1,7 @@
 import CustomError from "../errors/CustomError";
 import { NextFunction, Request, Response } from "express";
 import { EntityNotFoundError } from "typeorm";
+import { JsonWebTokenError } from "jsonwebtoken";
 
 export const errorHandler = (
     err: Error,
@@ -8,20 +9,27 @@ export const errorHandler = (
     res: Response,
     next: NextFunction
 ) => {
+    let error: Pick<Error, "name" | "message"> = err;
+    let status: number = 500;
     if (err instanceof CustomError) {
-        return res.status(err.status).send({
-            name: err.name,
-            message: err.message,
-        });
+        status = err.status;
     }
 
     if (err instanceof EntityNotFoundError) {
-        return res.status(404).send({
+        status = 404;
+        error = {
             name: err.name,
             message: "Nenhum objeto foi encontrado",
-        });
+        };
     }
 
-    console.log(err);
-    next(err);
+    if (err instanceof JsonWebTokenError) {
+        status = 401;
+        error = {
+            name: err.name,
+            message: "Token inválido",
+        };
+    }
+
+    res.status(status).send(error);
 };
