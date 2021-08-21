@@ -1,15 +1,13 @@
-import { Router } from "express";
+import { Application } from "express";
 
 import AuthController from "../controllers/AuthController";
 
 import newsRoute from "./news";
 import usersRoute from "./users";
 
-const routes = Router();
+export default (app: Application) => {
+    app.get("/login", AuthController.login);
 
-routes.post("/login", AuthController.login);
-
-routes.use("/news", newsRoute);
-routes.use("/users", usersRoute);
-
-export default routes;
+    app.use("/news", newsRoute);
+    app.use("/users", usersRoute);
+};

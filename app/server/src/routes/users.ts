@@ -1,12 +1,13 @@
 import { Router } from "express";
-import { isAuthenticated } from "../middlewares/Auth";
+import { optionalAuth, requiredAuth } from "../middlewares/Auth";
 
 import UsersController from "../controllers/UsersController";
 
 const usersRoute = Router();
 
-usersRoute.get("/:id", UsersController.getById);
-usersRoute.post("/", UsersController.create);
-usersRoute.patch("/:id", isAuthenticated, UsersController.update);
-usersRoute.delete("/:id", isAuthenticated, UsersController.delete);
+usersRoute.get("/:id", optionalAuth, UsersController.getById);
+usersRoute.post("/", optionalAuth, UsersController.create);
+
+usersRoute.patch("/:id", requiredAuth, UsersController.update);
+usersRoute.delete("/:id", requiredAuth, UsersController.delete);
 export default usersRoute;
