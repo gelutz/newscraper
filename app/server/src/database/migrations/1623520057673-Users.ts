@@ -14,7 +14,7 @@ export class Users1623520057673 implements MigrationInterface {
                         isGenerated: true,
                     },
                     {
-                        name: "nome",
+                        name: "name",
                         type: "varchar",
                         length: "100",
                         isNullable: false,
@@ -42,6 +42,6 @@ export class Users1623520057673 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable("news");
+        await queryRunner.dropTable("users");
     }
 }
