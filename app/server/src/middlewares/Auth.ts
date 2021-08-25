@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { config } from "dotenv";
 import UnauthorizedError from "../errors/UnauthorizedError";
+import TokenExpiredError from "../errors/TokenExpired";
 config();
 
-export function requiredAuth(req: Request, _: Response, next: NextFunction) {
+export function bearerAuth(req: Request, res: Response, next: NextFunction) {
     const { authorization } = req.headers;
 
     if (!authorization) {
@@ -12,14 +13,23 @@ export function requiredAuth(req: Request, _: Response, next: NextFunction) {
     }
 
     const token = authorization.replace("Bearer ", "");
-    jwt.verify(token, process.env.JWT_KEY!);
+    try {
+        jwt.verify(token, process.env.JWT_KEY!);
+    } catch (err) {
+        if (err instanceof JsonWebTokenError) {
+            if (err.message === "Token expirado") {
+                throw new TokenExpiredError("access");
+            }
+            // TODO adicionar tratação de erro de token que não é válido
+        }
+    }
 
     next();
 }
 
 export function optionalAuth(req: Request, res: Response, next: NextFunction) {
     if (req.headers.authorization) {
-        requiredAuth(req, res, next);
+        bearerAuth(req, res, next);
     } else {
         next();
     }
