@@ -2,8 +2,9 @@ import redis from "redis";
 import { promisify } from "util";
 
 type CustomRedisClient = {
-    get(key: string): Promise<boolean>;
+    get(key: string): Promise<string>;
     set(key: string, value: string): Promise<boolean>;
+    del(key: string): Promise<boolean>;
     // exists: Promise<boolean>;
 };
 
@@ -29,23 +30,13 @@ function connect(): CustomRedisClient {
     return client;
 }
 
-function asyncClient(client: redis.RedisClient): CustomRedisClient {
-    const getAsync: CustomRedisClient["get"] = promisify(client.get).bind(
-        client
-    );
-    const setAsync: CustomRedisClient["set"] = promisify(client.set).bind(
-        client
-    );
-    // const existsAsync: Promise<boolean> = promisify(client.exists).bind(client);
-
-    const newClient = {
+const asyncClient = (client: redis.RedisClient): CustomRedisClient => {
+    return {
         ...client,
-        get: getAsync,
-        set: setAsync,
-        // exists: existsAsync,
+        get: promisify(client.get).bind(client),
+        set: promisify(client.set).bind(client),
+        del: promisify(client.del).bind(client),
     };
-
-    return newClient;
-}
+};
 
 export { client, start };
