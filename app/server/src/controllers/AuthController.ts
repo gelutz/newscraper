@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
 import { config } from "dotenv";
-
 import bcrypt from "bcrypt";
-import { UsersRepository } from "../repositories/UsersRepository";
-import { generateToken } from "../utils/token";
 
+import { UsersRepository } from "../repositories/UsersRepository";
+import { getTokenPair } from "../utils/token";
+import Allowlist from "../repositories/Allowlist";
+import TokenExpiredError from "../errors/TokenExpired";
 config();
 
 class AuthController {
@@ -24,9 +25,31 @@ class AuthController {
         if (!isValidPassword) {
             return res.status(404).send({ message: "Unvalid password" });
         }
+        const [accessToken, opaqueToken] = await getTokenPair({ login });
 
-        const token = await generateToken({ login });
-        return res.send({ token, login });
+        res.set("Authorization", accessToken);
+        res.send({ opaqueToken, login });
+    }
+
+    async refreshTokens(req: Request, res: Response) {
+        const { opaque } = req.body;
+
+        // verificar o token no allowlist
+        const payload = await Allowlist.find(opaque);
+
+        if (new Date(payload) < new Date()) {
+            throw new TokenExpiredError("opaque");
+        }
+
+        // excluir o token do allowlist
+        await Allowlist.delete(opaque);
+
+        const [accessToken, newOpaque] = await getTokenPair({
+            login: req.body.login,
+        });
+
+        res.set("Authorization", accessToken);
+        res.status(200).send({ message: newOpaque });
     }
 }
 
