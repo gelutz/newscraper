@@ -1,16 +1,16 @@
 import CustomError from "../errors/CustomError";
-import { NextFunction, Request, Response } from "express";
+import { Application, NextFunction, Request, Response } from "express";
 import { EntityNotFoundError } from "typeorm";
 import { JsonWebTokenError } from "jsonwebtoken";
 
-export const errorHandler = (
-    err: Error,
-    _: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const errorHandler = (app: Application) => {
+    app.use(handler);
+};
+
+const handler = (err: Error, _: Request, res: Response, next: NextFunction) => {
     let error: Pick<Error, "name" | "message"> = err;
     let status: number = 500;
+
     if (err instanceof CustomError) {
         status = err.status;
     }
@@ -30,6 +30,6 @@ export const errorHandler = (
             message: "Token inválido",
         };
     }
-
+    next();
     res.status(status).send(error);
 };
