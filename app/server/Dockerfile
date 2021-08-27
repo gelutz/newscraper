@@ -7,10 +7,10 @@ FROM base as prod
 COPY package.json tsconfig.json ./
 # COPY package-lock.json ./
 
-RUN npm install --quiet --no-progress --only=production
+RUN yarn --prod
 
 FROM prod as development
 
-RUN npm install --quiet --no-progress --only=development
+RUN yarn
 
 EXPOSE 3333
