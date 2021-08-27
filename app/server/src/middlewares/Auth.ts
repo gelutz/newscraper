@@ -1,9 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
-import { config } from "dotenv";
 import UnauthorizedError from "../errors/UnauthorizedError";
 import TokenExpiredError from "../errors/TokenExpired";
-config();
+import { JWT_KEY } from "../config/environment";
 
 export function bearerAuth(req: Request, res: Response, next: NextFunction) {
     const { authorization } = req.headers;
@@ -14,7 +13,7 @@ export function bearerAuth(req: Request, res: Response, next: NextFunction) {
 
     const token = authorization.replace("Bearer ", "");
     try {
-        jwt.verify(token, process.env.JWT_KEY!);
+        jwt.verify(token, JWT_KEY);
     } catch (err) {
         if (err instanceof JsonWebTokenError) {
             if (err.message === "Token expirado") {

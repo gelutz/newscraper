@@ -1,9 +1,12 @@
 import { sign } from "jsonwebtoken";
 import { randomBytes } from "crypto";
-import Allowlist from "../repositories/Allowlist";
 import endOfWeek from "date-fns/endOfWeek";
+
+import Allowlist from "../repositories/Allowlist";
+import { JWT_KEY } from "../config/environment";
+
 export async function getAccessToken({ ...payload }): Promise<string> {
-    const token = sign({ ...payload }, process.env.JWT_KEY!, {
+    const token = sign({ ...payload }, JWT_KEY, {
         expiresIn: "5m",
     });
 

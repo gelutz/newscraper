@@ -32,7 +32,7 @@ export async function connect(): Promise<Connection> {
     }
 
     try {
-        const c = process.env.DB_TEST_HOST ? testPostgres : prodPostgres;
+        const c = prodPostgres;
         connection = await createConnection(c);
     } catch (e) {
         console.error(e);

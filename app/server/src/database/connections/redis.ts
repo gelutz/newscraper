@@ -1,5 +1,6 @@
 import redis from "redis";
 import { promisify } from "util";
+import { REDIS_PORT } from "../../config/environment";
 
 type CustomRedisClient = {
     get(key: string): Promise<string>;
@@ -21,8 +22,8 @@ function start(): void {
 function connect(): CustomRedisClient {
     const options = {
         host: "redis",
-        port: +process.env.REDIS_PORT!,
-        // password: process.env.REDIS_PASSWORD,
+        port: REDIS_PORT,
+        // password: REDIS_PASSWORD,
     };
     const syncClient = redis.createClient(options);
     client = asyncClient(syncClient);

@@ -1,14 +1,11 @@
 import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
-import { config } from "dotenv";
 import bcrypt from "bcrypt";
 
 import { UsersRepository } from "../repositories/UsersRepository";
 import { getTokenPair } from "../utils/token";
 import Allowlist from "../repositories/Allowlist";
 import TokenExpiredError from "../errors/TokenExpired";
-config();
-
 class AuthController {
     async login(req: Request, res: Response) {
         const { login, password } = req.body;

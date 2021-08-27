@@ -1,15 +1,12 @@
-import dotenv from "dotenv";
 import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
-
-dotenv.config();
-
+import { DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE } from "./environment";
 const prodPostgres: PostgresConnectionOptions = {
     type: "postgres",
-    host: process.env.DB_HOST,
+    host: DB_HOST,
     port: 5432,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
+    username: DB_USER,
+    password: DB_PASSWORD,
+    database: DB_DATABASE,
     logging: ["error"],
     entities: ["src/models/*.{js,ts}"],
     migrations: ["src/database/migrations/**/*.ts"],
@@ -21,11 +18,11 @@ const prodPostgres: PostgresConnectionOptions = {
 
 const testPostgres: PostgresConnectionOptions = {
     type: "postgres",
-    host: process.env.DB_TEST_HOST,
+    host: DB_HOST,
     port: 5432,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
+    username: DB_USER,
+    password: DB_PASSWORD,
+    database: DB_DATABASE,
     logging: "all",
     entities: ["src/models/*.{js,ts}"],
     migrations: ["src/database/migrations/**/*.ts"],
