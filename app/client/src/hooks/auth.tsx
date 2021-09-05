@@ -3,7 +3,7 @@ import React, { createContext, useCallback, useState, useContext } from "react";
 import connection from "../api/connection";
 
 interface AuthState {
-  token: string;
+  opaque: string;
   user: object;
 }
 
@@ -16,51 +16,61 @@ interface AuthContextData {
   user: object;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
+  refresh(): void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC = ({ children }) => {
+  // state
   const [data, setData] = useState<AuthState>(() => {
-    const token = localStorage.getItem("@Newscraper:token");
+    const access = localStorage.getItem("@Newscraper:access");
+    const opaque = localStorage.getItem("@Newscraper:opaque");
     const user = localStorage.getItem("@Newscraper:user");
 
-    if (token && user) {
-      // descomentar quando for adicionado o middleware de autenticação no backend
-      connection.defaults.headers.authorization = `Bearer ${token}`;
-      return { token, user: JSON.parse(user) };
+    if (opaque && user) {
+      connection.defaults.headers.common["Authorization"] = `${access}`;
+      return { opaque, user: JSON.parse(user) };
     }
 
     return {} as AuthState;
   });
 
+  // Signin
   const signIn = useCallback(async ({ login, password }) => {
-    const response = await connection.post("/auth", {
+    const response = await connection.post("/login", {
       login,
       password,
     });
 
-    const { token, user } = response.data;
+    const { opaque, user, access } = response.data;
+    connection.defaults.headers.common["Authorization"] = `Bearer ${access}`;
 
     delete user.password;
     // descomentar quando for adicionado o middleware de autenticação no backend
-    connection.defaults.headers.authorization = `Bearer ${token}`;
 
-    localStorage.setItem("@Newscraper:token", token);
+    localStorage.setItem("@Newscraper:access", access);
+    localStorage.setItem("@Newscraper:opaque", opaque);
     localStorage.setItem("@Newscraper:user", JSON.stringify(user));
 
-    setData({ token, user });
+    setData({ opaque, user });
   }, []);
 
+  // Signout
   const signOut = useCallback(() => {
-    localStorage.removeItem("@Newscraper:token");
+    localStorage.removeItem("@Newscraper:access");
+    localStorage.removeItem("@Newscraper:opaque");
     localStorage.removeItem("@Newscraper:user");
 
     setData({} as AuthState);
   }, []);
 
+  const refresh = useCallback(() => {
+    const opaque = localStorage.getItem("@Newscraper:opaque");
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
+    <AuthContext.Provider value={{ user: data.user, signIn, signOut, refresh }}>
       {children}
     </AuthContext.Provider>
   );

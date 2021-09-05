@@ -49,25 +49,25 @@ services:
       - postgres:/var/lib/postresql/data
 
 ##
-#   client:
-#     build:
-#       context: ./app/client
-#       target: ${DOCKER_TARGET}
-#     container_name: client
-#     env_file:
-#       - ./.env
-#     depends_on:
-#       - server
-#     ports:
-#       - ${CLIENT_PORT}:${CLIENT_PORT}
-#     volumes:
-#       - /app/client/node_modules
-#       - ./app/client/:/usr/app/client/
-#     command: ["npm", "run", "start"]
-#     environment:
-#       CHOKIDAR_USEPOLLING: "true" # seems like this enables hot reloading https://stackoverflow.com/questions/44643045/running-development-server-with-create-react-app-inside-of-a-docker-container
-#     links:
-#       - server
+  client:
+    build:
+      context: ./app/client
+      target: ${DOCKER_TARGET}
+    container_name: client
+    env_file:
+      - ./.env
+    depends_on:
+      - server
+    ports:
+      - ${CLIENT_PORT}:${CLIENT_PORT}
+    volumes:
+      - /app/client/node_modules
+      - ./app/client/:/usr/app/client/
+    command: ["npm", "run", "start"]
+    environment:
+      CHOKIDAR_USEPOLLING: "true" # seems like this enables hot reloading https://stackoverflow.com/questions/44643045/running-development-server-with-create-react-app-inside-of-a-docker-container
+    links:
+      - server
 
 # ##
 #   webscraper:

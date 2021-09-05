@@ -25,10 +25,9 @@ class AuthController {
         if (!isValidPassword) {
             return res.status(404).send({ message: "Unvalid password" });
         }
-        const [accessToken, opaqueToken] = await getTokenPair({ login });
 
-        res.set("Authorization", accessToken);
-        res.send({ opaqueToken, login });
+        const [access, opaque] = await getTokenPair({ login });
+        res.send({ opaque, access, user });
     }
 
     async refreshTokens(req: Request, res: Response) {
@@ -44,11 +43,11 @@ class AuthController {
         // excluir o token do allowlist
         await Allowlist.delete(opaque);
 
-        const [accessToken, newOpaque] = await getTokenPair({
+        const [access, newOpaque] = await getTokenPair({
             login: req.body.login,
         });
 
-        res.set("Authorization", accessToken);
+        res.set({ Authorization: access });
         res.status(200).send({ message: newOpaque });
     }
 }

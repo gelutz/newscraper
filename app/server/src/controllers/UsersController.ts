@@ -26,10 +26,15 @@ class UsersController {
 
     async update(req: Request, res: Response) {
         const repository = getCustomRepository(UsersRepository);
-        const newValues = { ...req.body };
+        const { name, email, login } = req.body;
         const { id } = req.params;
+        if (!name && !email) {
+            throw new Error(
+                `Nenhuma dado para atualizar o user ${id} foi recebido.`
+            );
+        }
 
-        const data = await repository.updateOne({ id }, newValues);
+        const data = await repository.updateOne({ id }, { name, email, login });
 
         return res.status(204).send({ ...data });
     }

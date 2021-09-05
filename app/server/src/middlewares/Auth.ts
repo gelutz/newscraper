@@ -5,13 +5,17 @@ import UnauthorizedError from "../errors/UnauthorizedError";
 import TokenExpiredError from "../errors/TokenExpired";
 config();
 
-export function bearerAuth(req: Request, res: Response, next: NextFunction) {
+export function bearerAuth(req: Request, _: Response, next: NextFunction) {
     const { authorization } = req.headers;
 
     if (!authorization) {
         throw new UnauthorizedError();
     }
 
+    console.log(
+        "🚀 ~ file: Auth.ts ~ line 9 ~ bearerAuth ~ bearerAuth",
+        new Date()
+    );
     const token = authorization.replace("Bearer ", "");
     try {
         jwt.verify(token, process.env.JWT_KEY!);
@@ -20,10 +24,12 @@ export function bearerAuth(req: Request, res: Response, next: NextFunction) {
             if (err.message === "Token expirado") {
                 throw new TokenExpiredError("access");
             }
-            // TODO adicionar tratação de erro de token que não é válido
+
+            if (err.message === "invalid token") {
+                throw new UnauthorizedError();
+            }
         }
     }
-
     next();
 }
 

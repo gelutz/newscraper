@@ -2,9 +2,7 @@ import { client } from "../database/connections/redis";
 
 class Allowlist {
     find = async (token: string): Promise<string> => {
-        const data = await client.get(token);
-
-        return data;
+        return await client.get(token);
     };
 
     save = async (token: string, { exp }: { exp: string }) => {
