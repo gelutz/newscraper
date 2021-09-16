@@ -5,7 +5,7 @@
 up:
 	if [ ! -f "./.env" ]; then echo ".env missing\nRun \`make env\` to create all .env files" && exit 1; fi
 
-	docker-compose up -d --build
+	docker-compose up -d
 
 
 # --rmi (all | local) 	remove (all | local) imagens desse serviço
@@ -29,3 +29,7 @@ install:
         echo "./app/$$file" && npm install ./app/$$file; \
     done
 #
+
+.PHONY: log
+log:
+	docker-compose logs -f
