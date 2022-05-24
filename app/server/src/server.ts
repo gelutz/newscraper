@@ -10,8 +10,13 @@ import { errorHandler } from "./middlewares/Error";
 Routes(app);
 errorHandler(app);
 
-redisClient.start();
-postgresClient.start(); // async
+// try {
+//     redisClient.start();
+// } catch (e) {
+//     console.log(e);
+// }
 
-const port = process.env.SERVER_PORT;
-app.listen(port, () => console.log(`Server running at port ${port}`));
+postgresClient.start().then(() => {
+    const port = process.env.SERVER_PORT;
+    app.listen(port, () => console.log(`Server running at port ${port}`));
+});

@@ -8,12 +8,8 @@ export const errorHandler = (app: Application) => {
 };
 
 const handler = (err: Error, _: Request, res: Response, next: NextFunction) => {
-    let error: Pick<Error, "name" | "message"> = err;
+    let error = { name: err.name, message: err.message };
     let status: number = 500;
-
-    if (err instanceof CustomError) {
-        status = err.status;
-    }
 
     if (err instanceof EntityNotFoundError) {
         status = 404;
@@ -30,6 +26,6 @@ const handler = (err: Error, _: Request, res: Response, next: NextFunction) => {
             message: "Token inválido",
         };
     }
-    next();
+    next(err);
     res.status(status).send(error);
 };

@@ -1,15 +1,15 @@
-import { sign } from "jsonwebtoken";
-import { randomBytes } from "crypto";
-import Allowlist from "../repositories/Allowlist";
-import endOfWeek from "date-fns/endOfWeek";
+import { sign } from 'jsonwebtoken';
+import { randomBytes } from 'crypto';
+import Allowlist from '../repositories/Allowlist';
+import endOfWeek from 'date-fns/endOfWeek';
 export function getAccessToken({ ...payload }): string {
     return sign({ ...payload }, process.env.JWT_KEY!, {
-        expiresIn: "5m",
+        expiresIn: '5m',
     });
 }
 
 export function getOpaqueToken(): string {
-    return randomBytes(16).toString("hex");
+    return randomBytes(16).toString('hex');
 }
 
 export async function getTokenPair({

@@ -22,10 +22,15 @@ function connect(): CustomRedisClient {
     const options = {
         host: "redis",
         port: +process.env.REDIS_PORT!,
-        // password: process.env.REDIS_PASSWORD,
+        password: process.env.REDIS_PASSWORD,
     };
-    const syncClient = redis.createClient(options);
-    client = asyncClient(syncClient);
+    console.log(
+        "🚀 ~ file: redis.ts ~ line 27 ~ connect ~ options",
+        options,
+        process.env.REDIS_PASSWORD
+    );
+
+    client = asyncClient(redis.createClient(options));
 
     return client;
 }

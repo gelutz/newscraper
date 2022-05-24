@@ -12,11 +12,8 @@ export function bearerAuth(req: Request, _: Response, next: NextFunction) {
         throw new UnauthorizedError();
     }
 
-    console.log(
-        "🚀 ~ file: Auth.ts ~ line 9 ~ bearerAuth ~ bearerAuth",
-        new Date()
-    );
     const token = authorization.replace("Bearer ", "");
+    console.log("🚀 ~ file: Auth.ts ~ line 16 ~ bearerAuth ~ token", token);
     try {
         jwt.verify(token, process.env.JWT_KEY!);
     } catch (err) {
@@ -28,6 +25,8 @@ export function bearerAuth(req: Request, _: Response, next: NextFunction) {
             if (err.message === "invalid token") {
                 throw new UnauthorizedError();
             }
+
+            throw new Error("idk what happened");
         }
     }
     next();

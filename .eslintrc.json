@@ -14,7 +14,7 @@
     "semi": "off",
     "indent": ["error", 4],
     "no-tabs": ["off"],
-    "quotes": ["error", "double"],
+    "quotes": ["error", "single"],
     "comma-dangle": "off",
     "space-before-function-paren": "off"
   }
