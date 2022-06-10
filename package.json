@@ -1,4 +1,19 @@
 {
+    "name": "newscraper",
+    "version": "1.0.0",
+    "license": "MIT",
+    "private": "true",
+    "workspaces": [
+        "app/web",
+        "app/api",
+        "app/webscraper"
+    ],
+    "scripts": {
+        "start": "run-s start:*",
+        "start:web": "cd app/web && yarn start",
+        "start:api": "cd app/api && yarn start",
+        "start:scraper": "cd app/scraper && yarn start"
+    },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^4.22.0",
         "@typescript-eslint/parser": "^4.22.0",
@@ -9,10 +24,5 @@
         "eslint-plugin-promise": "^4.3.1",
         "eslint-plugin-react": "^7.23.2",
         "prettier": "^2.2.1"
-    },
-    "dependencies": {
-        "client": "file:app/client",
-        "server": "file:app/server",
-        "webscraper": "file:app/webscraper"
     }
 }

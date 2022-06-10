@@ -1,6 +1,6 @@
 FROM node:12-alpine as base
 
-WORKDIR /usr/app/webscraper
+WORKDIR /app/webscraper
 
 FROM base as prod
 
