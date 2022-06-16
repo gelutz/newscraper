@@ -1,22 +1,55 @@
 version: "3.7"
 
 services:
+    web:
+        image: node:12-alpine
+        container_name: news-web
+        tty: true
+        stdin_open: true
+        depends_on:
+            - api
+        ports:
+            - ${CLIENT_PORT}:${CLIENT_PORT}
+        working_dir: /web
+        volumes:
+            - ./app/web/:/web
+            - nm_web:/app/web/node_modules
+        environment:
+            CHOKIDAR_USEPOLLING: "true" # seems like this enables hot reloading https://stackoverflow.com/questions/44643045/running-development-server-with-create-react-app-inside-of-a-docker-container
+        command: yarn && yarn start
+    ##
     api:
-        build:
-            context: ./app/api/
+        image: node:12-alpine
         container_name: news-api
-        env_file:
-            - ./.env
+        tty: true
+        stdin_open: true
         depends_on:
             - db
-            # - redis
+        # - redis
         ports:
             - ${SERVER_PORT}:${SERVER_PORT}
+        working_dir: /api
         volumes:
-            - ./app/api/src:/app/api/src
-            - ./.env:/app/api/.env
-        entrypoint: [ "yarn", "dev" ]
-
+            - ./app/api/:/api
+            - nm_api:/app/api/node_modules
+        command: [ "-c", "yarn && yarn start" ]
+        entrypoint: sh
+        #
+    webscraper:
+        image: node:12-alpine
+        container_name: webscraper
+        tty: true
+        stdin_open: true
+        depends_on:
+            - server
+        ports:
+            - ${SERVICE_PORT}:${SERVICE_PORT}
+        working_dir: /webscraper
+        volumes:
+            - ./app/webscraper/:/webscraper
+            - nm_webscraper:/app/webscraper/node_modules
+        command: [ "-c", "yarn && yarn start" ]
+        entrypoint: sh
     ##
     # redis:
     #   image: docker.io/bitnami/redis:6.2
@@ -44,45 +77,12 @@ services:
         volumes:
             - postgres:/var/lib/postresql/data
 
-    ##
-    web:
-        build:
-            context: ./app/web
-        container_name: news-web
-        env_file:
-            - ./.env
-        ports:
-            - ${CLIENT_PORT}:${CLIENT_PORT}
-        volumes:
-            - ./app/web/:/app/web/
-            - ./.env:/app/web/.env
-        depends_on:
-            - api
-        environment:
-            CHOKIDAR_USEPOLLING: "true" # seems like this enables hot reloading https://stackoverflow.com/questions/44643045/running-development-server-with-create-react-app-inside-of-a-docker-container
-        entrypoint: [ "yarn", "dev" ]
-
-# ##
-#   webscraper:
-#     build:
-#       context: ./app/webscraper
-#       target: ${DOCKER_TARGET}
-
-#     container_name: webscraper
-#     depends_on:
-#       - server
-#     ports:
-#       - ${SERVICE_PORT}:${SERVICE_PORT}
-#     volumes:
-#       - /app/webscraper/node_modules
-#       - ./app/webscraper/:/usr/app/webscraper
-#     command: ["npm", "run", "dev"]
-#     links:
-#       - server
-
-##
+# networks:
 
 volumes:
     postgres:
-
     redis:
+
+    nm_api:
+    nm_web:
+    nm_webscraper:

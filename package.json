@@ -9,6 +9,10 @@
         "app/webscraper"
     ],
     "scripts": {
+        "start": "yarn workspaces run start",
+        "start:web": "yarn workspace @newscraper/web start",
+        "start:api": "yarn workspace @newscraper/api start",
+        "start:scraper": "yarn workspace @newscraper/webscraper start",
         "start": "run-s start:*",
         "start:web": "cd app/web && yarn start",
         "start:api": "cd app/api && yarn start",

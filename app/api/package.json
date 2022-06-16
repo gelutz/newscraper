@@ -21,13 +21,13 @@
         "typescript": "^4.2.4"
     },
     "scripts": {
+        "build": "tsc",
+        "start": "tsc && node dist/server.js",
         "start": "ts-node src/server.ts",
         "dev": "ts-node-dev src/server.ts",
         "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config ./src/config/ormconfig.ts",
         "test": "NODE_ENV=test jest",
-        "test:open": "NODE_ENV=test jest --detectOpenHandles",
-        "test:chrome": "NODE_ENV=test node --inspect-brk ./node_modules/.bin/jest -i",
-        "test:coverage": "jest --coverage"
+        "test:open": "NODE_ENV=test jest --detectOpenHandles"
     },
     "devDependencies": {
         "@babel/core": "^7.13.15",
