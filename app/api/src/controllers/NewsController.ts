@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import { getCustomRepository } from "typeorm";
+import { Request, Response } from 'express';
+import { getCustomRepository } from 'typeorm';
 
-import { NewsRepository } from "../repositories/NewsRepository";
+import { NewsRepository } from '../repositories/NewsRepository';
 
 class NewsController {
     async createFromWebscraping(req: Request, res: Response) {}

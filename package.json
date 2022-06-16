@@ -13,10 +13,10 @@
         "start:web": "yarn workspace @newscraper/web start",
         "start:api": "yarn workspace @newscraper/api start",
         "start:scraper": "yarn workspace @newscraper/webscraper start",
-        "start": "run-s start:*",
-        "start:web": "cd app/web && yarn start",
-        "start:api": "cd app/api && yarn start",
-        "start:scraper": "cd app/scraper && yarn start"
+        "lint": "yarn workspaces run lint -o .lint.log",
+        "lint:web": "yarn workspace @newscraper/web lint",
+        "lint:api": "yarn workspace @newscraper/api lint",
+        "lint:scraper": "yarn workspace @newscraper/webscraper lint"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^4.22.0",

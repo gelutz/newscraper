@@ -1,20 +1,20 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity("news")
+@Entity('news')
 class News {
-    @PrimaryGeneratedColumn("increment")
+    @PrimaryGeneratedColumn('increment')
     id: number;
 
-    @Column("varchar", { length: 150, nullable: false })
+    @Column('varchar', { length: 150, nullable: false })
     title: string;
 
-    @Column("text", { nullable: false })
+    @Column('text', { nullable: false })
     link: string;
 
-    @Column("varchar", { length: 20, nullable: true })
+    @Column('varchar', { length: 20, nullable: true })
     origin: string;
 
-    @Column("date", { nullable: true, default: "current_date" })
+    @Column('date', { nullable: true, default: 'current_date' })
     date: Date;
 }
 

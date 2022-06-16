@@ -1,4 +1,4 @@
-import CustomError from "./CustomError";
+import CustomError from './CustomError';
 
 export default class NotFoundError extends CustomError {
     readonly status: number;
@@ -8,7 +8,7 @@ export default class NotFoundError extends CustomError {
     constructor(entidade) {
         super();
         this.message = `${entidade} não foi encontrato`;
-        this.name = "Not Found";
+        this.name = 'Not Found';
         this.status = 404;
     }
 }

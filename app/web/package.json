@@ -4,6 +4,7 @@
     "version": "0.0.0",
     "scripts": {
         "start": "tsc && vite build",
+        "lint": "eslint . --fix --ext .ts,.tsx --no-color -o ../../.lint.log",
         "dev": "vite",
         "preview": "vite preview"
     },

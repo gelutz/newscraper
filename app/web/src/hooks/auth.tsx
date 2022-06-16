@@ -1,6 +1,6 @@
-import React, { createContext, useCallback, useState, useContext } from "react";
+import React, { createContext, useCallback, useState, useContext } from 'react';
 
-import connection from "../api/connection";
+import connection from '../api/connection';
 
 interface AuthState {
   opaque: string;
@@ -22,68 +22,68 @@ interface AuthContextData {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC = ({ children }) => {
-  // state
-  const [data, setData] = useState<AuthState>(() => {
-    const access = localStorage.getItem("@Newscraper:access");
-    const opaque = localStorage.getItem("@Newscraper:opaque");
-    const user = localStorage.getItem("@Newscraper:user");
+    // state
+    const [data, setData] = useState<AuthState>(() => {
+        const access = localStorage.getItem('@Newscraper:access');
+        const opaque = localStorage.getItem('@Newscraper:opaque');
+        const user = localStorage.getItem('@Newscraper:user');
 
-    if (opaque && user) {
-      connection.defaults.headers.common["Authorization"] = `${access}`;
-      return { opaque, user: JSON.parse(user) };
-    }
+        if (opaque && user) {
+            connection.defaults.headers.common.Authorization = `${access}`;
+            return { opaque, user: JSON.parse(user) };
+        }
 
-    return {} as AuthState;
-  });
-
-  // Signin
-  const signIn = useCallback(async ({ login, password }) => {
-    const response = await connection.post("/login", {
-      login,
-      password,
+        return {} as AuthState;
     });
 
-    const { opaque, user, access } = response.data;
-    connection.defaults.headers.common["Authorization"] = `Bearer ${access}`;
+    // Signin
+    const signIn = useCallback(async ({ login, password }) => {
+        const response = await connection.post('/login', {
+            login,
+            password,
+        });
 
-    delete user.password;
-    // descomentar quando for adicionado o middleware de autenticação no backend
+        const { opaque, user, access } = response.data;
+        connection.defaults.headers.common.Authorization = `Bearer ${access}`;
 
-    localStorage.setItem("@Newscraper:access", access);
-    localStorage.setItem("@Newscraper:opaque", opaque);
-    localStorage.setItem("@Newscraper:user", JSON.stringify(user));
+        delete user.password;
+        // descomentar quando for adicionado o middleware de autenticação no backend
 
-    setData({ opaque, user });
-  }, []);
+        localStorage.setItem('@Newscraper:access', access);
+        localStorage.setItem('@Newscraper:opaque', opaque);
+        localStorage.setItem('@Newscraper:user', JSON.stringify(user));
 
-  // Signout
-  const signOut = useCallback(() => {
-    localStorage.removeItem("@Newscraper:access");
-    localStorage.removeItem("@Newscraper:opaque");
-    localStorage.removeItem("@Newscraper:user");
+        setData({ opaque, user });
+    }, []);
 
-    setData({} as AuthState);
-  }, []);
+    // Signout
+    const signOut = useCallback(() => {
+        localStorage.removeItem('@Newscraper:access');
+        localStorage.removeItem('@Newscraper:opaque');
+        localStorage.removeItem('@Newscraper:user');
 
-  const refresh = useCallback(() => {
-    const opaque = localStorage.getItem("@Newscraper:opaque");
-  }, []);
+        setData({} as AuthState);
+    }, []);
 
-  return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut, refresh }}>
-      {children}
-    </AuthContext.Provider>
-  );
+    const refresh = useCallback(() => {
+        const opaque = localStorage.getItem('@Newscraper:opaque');
+    }, []);
+
+    return (
+        <AuthContext.Provider value={{ user: data.user, signIn, signOut, refresh }}>
+            {children}
+        </AuthContext.Provider>
+    );
 };
 
 function useAuth(): AuthContextData {
-  const context = useContext(AuthContext);
+    const context = useContext(AuthContext);
 
-  if (!context) {
-    throw new Error("useAuth must be used within a AuthProvider");
-  }
+    if (!context) {
+        throw new Error('useAuth must be used within a AuthProvider');
+    }
 
-  return context;
+    return context;
 }
 
 export { AuthProvider, useAuth };

@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "start": "ts-node src/server.ts",
+        "lint": "eslint . --fix --ext .ts --no-color -o ../../.lint.log",
         "dev": "tsnd src/server.ts --transpileOnly"
     },
     "keywords": [],

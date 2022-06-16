@@ -1,11 +1,11 @@
-import "express-async-errors";
-import * as postgresClient from "./database/connections/postgres";
-import * as redisClient from "./database/connections/redis";
+import 'express-async-errors';
+import * as postgresClient from './database/connections/postgres';
+import * as redisClient from './database/connections/redis';
 
-import Routes from "./routes";
+import Routes from './routes';
 
-import { app } from "./app";
-import { errorHandler } from "./middlewares/Error";
+import { app } from './app';
+import { errorHandler } from './middlewares/Error';
 
 Routes(app);
 errorHandler(app);

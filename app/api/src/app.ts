@@ -1,7 +1,7 @@
-import express from "express";
-import cors from "cors";
+import express from 'express';
+import cors from 'cors';
 
-import { xPowered } from "./middlewares/xPowered";
+import { xPowered } from './middlewares/xPowered';
 
 const app = express();
 app.use(cors());

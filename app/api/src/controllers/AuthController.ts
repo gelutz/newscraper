@@ -1,12 +1,12 @@
-import { Request, Response } from "express";
-import { getCustomRepository } from "typeorm";
-import { config } from "dotenv";
-import bcrypt from "bcrypt";
+import { Request, Response } from 'express';
+import { getCustomRepository } from 'typeorm';
+import { config } from 'dotenv';
+import bcrypt from 'bcrypt';
 
-import { UsersRepository } from "../repositories/UsersRepository";
-import { getTokenPair } from "../utils/token";
-import Allowlist from "../repositories/Allowlist";
-import TokenExpiredError from "../errors/TokenExpired";
+import { UsersRepository } from '../repositories/UsersRepository';
+import { getTokenPair } from '../utils/token';
+import Allowlist from '../repositories/Allowlist';
+import TokenExpiredError from '../errors/TokenExpired';
 config();
 
 class AuthController {
@@ -17,13 +17,13 @@ class AuthController {
 
         const user = await repository.findOne({ login });
         if (!user) {
-            return res.status(404).send({ message: "User not found" });
+            return res.status(404).send({ message: 'User not found' });
         }
 
         const isValidPassword = await bcrypt.compare(password, user.password);
 
         if (!isValidPassword) {
-            return res.status(404).send({ message: "Unvalid password" });
+            return res.status(404).send({ message: 'Unvalid password' });
         }
 
         const [access, opaque] = await getTokenPair({ login });
@@ -37,7 +37,7 @@ class AuthController {
         const payload = await Allowlist.find(opaque);
 
         if (new Date(payload) < new Date()) {
-            throw new TokenExpiredError("opaque");
+            throw new TokenExpiredError('opaque');
         }
 
         // excluir o token do allowlist

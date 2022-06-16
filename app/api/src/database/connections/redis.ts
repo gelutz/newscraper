@@ -1,5 +1,5 @@
-import redis from "redis";
-import { promisify } from "util";
+import redis from 'redis';
+import { promisify } from 'util';
 
 type CustomRedisClient = {
     get(key: string): Promise<string>;
@@ -12,7 +12,7 @@ let client: CustomRedisClient;
 
 function start(): void {
     if (client) {
-        throw new Error("Redis client already established");
+        throw new Error('Redis client already established');
     }
 
     connect();
@@ -20,12 +20,12 @@ function start(): void {
 
 function connect(): CustomRedisClient {
     const options = {
-        host: "redis",
+        host: 'redis',
         port: +process.env.REDIS_PORT!,
         password: process.env.REDIS_PASSWORD,
     };
     console.log(
-        "🚀 ~ file: redis.ts ~ line 27 ~ connect ~ options",
+        '🚀 ~ file: redis.ts ~ line 27 ~ connect ~ options',
         options,
         process.env.REDIS_PASSWORD
     );

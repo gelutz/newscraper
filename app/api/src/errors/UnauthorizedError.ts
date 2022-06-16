@@ -1,4 +1,4 @@
-import CustomError from "./CustomError";
+import CustomError from './CustomError';
 
 export default class UnauthorizedError extends CustomError {
     readonly status: number;
@@ -7,8 +7,8 @@ export default class UnauthorizedError extends CustomError {
 
     constructor() {
         super();
-        this.message = "Não está autorizado.";
-        this.name = "Unauthorized";
+        this.message = 'Não está autorizado.';
+        this.name = 'Unauthorized';
         this.status = 401;
     }
 }

@@ -1,4 +1,4 @@
-import { client } from "../database/connections/redis";
+import { client } from '../database/connections/redis';
 
 class Allowlist {
     find = async (token: string): Promise<string> => {

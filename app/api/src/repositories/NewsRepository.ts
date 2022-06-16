@@ -1,4 +1,4 @@
-import News from "../models/News";
+import News from '../models/News';
 import {
     Brackets,
     EntityRepository,
@@ -6,8 +6,8 @@ import {
     ObjectLiteral,
     Repository,
     UpdateResult,
-} from "typeorm";
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
+} from 'typeorm';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 @EntityRepository(News)
 export class NewsRepository extends Repository<News> {
@@ -15,7 +15,7 @@ export class NewsRepository extends Repository<News> {
     // e adiciona %% no início e fim das strings
     async ilike(
         data: Partial<News>,
-        columns: string[] = ["id", "title", "link", "origin", "date"]
+        columns: string[] = ['id', 'title', 'link', 'origin', 'date']
     ): Promise<News[]> {
         const qb = this.createQueryBuilder().select(columns);
 
@@ -24,8 +24,8 @@ export class NewsRepository extends Repository<News> {
                 return;
             }
 
-            if (c === "title" || c === "link" || c === "origin") {
-                data[c] = "%" + data[c]?.replace(" ", "%") + "%";
+            if (c === 'title' || c === 'link' || c === 'origin') {
+                data[c] = '%' + data[c]?.replace(' ', '%') + '%';
 
                 qb.where(`${c} ilike :${c}`, data);
 
@@ -42,8 +42,8 @@ export class NewsRepository extends Repository<News> {
         if (!o.title || !o.link) {
             throw Error(
                 `Missing arguments:
-                ${o.title ? "Title" : ""};
-                ${o.link ? "Link" : ""}`
+                ${o.title ? 'Title' : ''};
+                ${o.link ? 'Link' : ''}`
             );
         }
         const New = this.create();
@@ -80,7 +80,7 @@ export class NewsRepository extends Repository<News> {
         criteria: string | Brackets | ObjectLiteral | ObjectLiteral[],
         values: QueryDeepPartialEntity<News>
     ): Promise<UpdateResult> {
-        const qr = this.createQueryBuilder("news")
+        const qr = this.createQueryBuilder('news')
             .update()
             .set(values)
             .where(criteria);

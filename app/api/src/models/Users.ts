@@ -4,12 +4,12 @@ import {
     Column,
     Entity,
     PrimaryGeneratedColumn,
-} from "typeorm";
-import bcrypt from "bcrypt";
+} from 'typeorm';
+import bcrypt from 'bcrypt';
 
-@Entity("users")
+@Entity('users')
 class Users {
-    @PrimaryGeneratedColumn("increment")
+    @PrimaryGeneratedColumn('increment')
     id: string;
 
     @Column()

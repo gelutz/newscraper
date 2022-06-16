@@ -23,7 +23,7 @@
     "scripts": {
         "build": "tsc",
         "start": "tsc && node dist/server.js",
-        "start": "ts-node src/server.ts",
+        "lint": "eslint . --fix --ext .ts --no-color -o ../../.lint.log",
         "dev": "ts-node-dev src/server.ts",
         "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config ./src/config/ormconfig.ts",
         "test": "NODE_ENV=test jest",

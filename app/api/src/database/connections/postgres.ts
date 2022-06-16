@@ -3,19 +3,19 @@ import {
     CannotExecuteNotConnectedError,
     Connection,
     createConnection,
-} from "typeorm";
+} from 'typeorm';
 
-import { prodPostgres, testPostgres } from "../../config/ormconfig";
+import { prodPostgres, testPostgres } from '../../config/ormconfig';
 
 let connection: Connection;
 
 export async function start(): Promise<Boolean> {
     if (connection) {
-        throw new CannotConnectAlreadyConnectedError("default");
+        throw new CannotConnectAlreadyConnectedError('default');
     }
 
     try {
-        const c = process.env.NODE_ENV === "test" ? testPostgres : prodPostgres;
+        const c = process.env.NODE_ENV === 'test' ? testPostgres : prodPostgres;
         connection = await createConnection(c);
         connection.runMigrations();
 
@@ -28,7 +28,7 @@ export async function start(): Promise<Boolean> {
 
 export async function connect(): Promise<Connection> {
     if (connection) {
-        throw new CannotConnectAlreadyConnectedError("default");
+        throw new CannotConnectAlreadyConnectedError('default');
     }
 
     try {
@@ -43,7 +43,7 @@ export async function connect(): Promise<Connection> {
 
 export async function disconnect(): Promise<void> {
     if (!connection) {
-        throw new CannotExecuteNotConnectedError("default");
+        throw new CannotExecuteNotConnectedError('default');
     }
 
     await connection.close();
