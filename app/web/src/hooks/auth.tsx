@@ -3,20 +3,20 @@ import React, { createContext, useCallback, useState, useContext } from 'react';
 import connection from '../api/connection';
 
 interface AuthState {
-  opaque: string;
-  user: object;
+    opaque: string;
+    user: object;
 }
 
 interface SignInCredentials {
-  login: string;
-  password: string;
+    login: string;
+    password: string;
 }
 
 interface AuthContextData {
-  user: object;
-  signIn(credentials: SignInCredentials): Promise<void>;
-  signOut(): void;
-  refresh(): void;
+    user: object;
+    signIn(credentials: SignInCredentials): Promise<void>;
+    signOut(): void;
+    refresh(): void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
