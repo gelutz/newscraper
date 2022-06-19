@@ -13,10 +13,14 @@ services:
         working_dir: /web
         volumes:
             - ./app/web/:/web
+            - ./.env:/web/.env
             - nm_web:/app/web/node_modules
         environment:
             CHOKIDAR_USEPOLLING: "true" # seems like this enables hot reloading https://stackoverflow.com/questions/44643045/running-development-server-with-create-react-app-inside-of-a-docker-container
-        command: yarn && yarn start
+        # command: [ "-c", "yarn && yarn start" ]
+        # entrypoint: sh
+        command: [ "-c", "yarn && yarn dev" ]
+        entrypoint: sh
     ##
     api:
         image: node:12-alpine
@@ -31,9 +35,12 @@ services:
         working_dir: /api
         volumes:
             - ./app/api/:/api
+            - ./.env:/api/.env
             - nm_api:/app/api/node_modules
         command: [ "-c", "yarn && yarn start" ]
         entrypoint: sh
+        # command: [ "-c", "yarn && yarn dev" ]
+        # entrypoint: sh
         #
     webscraper:
         image: node:12-alpine
@@ -47,8 +54,11 @@ services:
         working_dir: /webscraper
         volumes:
             - ./app/webscraper/:/webscraper
+            - ./.env:/webscraper/.env
             - nm_webscraper:/app/webscraper/node_modules
-        command: [ "-c", "yarn && yarn start" ]
+        # command: [ "-c", "yarn && yarn start" ]
+        # entrypoint: sh
+        command: [ "-c", "yarn && yarn dev" ]
         entrypoint: sh
     ##
     # redis:

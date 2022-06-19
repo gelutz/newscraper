@@ -4,12 +4,14 @@
     "version": "0.0.0",
     "scripts": {
         "build": "tsc && vite build",
+        "start": "vite",
         "lint": "eslint . --fix --ext .ts,.tsx --no-color -o ../../.lint.log",
         "dev": "vite",
         "preview": "vite preview"
     },
     "dependencies": {
         "axios": "^0.27.2",
+        "date-fns": "^2.28.0",
         "react": "^17.0.0",
         "react-dom": "^17.0.0",
         "react-hook-form": "^7.31.3",
