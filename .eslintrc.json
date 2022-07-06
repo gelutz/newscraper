@@ -1,42 +1,42 @@
 {
-    "env": {
-        "es2020": true,
-        "node": true,
-        "browser": true
-    },
-    "extends": [
-        "standard",
-        "eslint:recommended"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": 11,
-        "sourceType": "module"
-    },
-    "plugins": [
-        "@typescript-eslint"
-    ],
-    "ignorePatterns": [
-        "*.json"
-    ],
-    "rules": {
-        "semi": "off",
-        "indent": [
-            "error",
-            4
-        ],
-        "no-tabs": [
-            "off"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "comma-dangle": "off",
-        "space-before-function-paren": "off",
-        "no-use-before-define": "off",
-        "@typescript-eslint/no-use-before-define": [
-            "error"
-        ]
-    }
+	"env": {
+		"es2020": true,
+		"node": true,
+		"browser": true
+	},
+	"extends": [
+		"standard",
+		"eslint:recommended"
+	],
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaVersion": 11,
+		"sourceType": "module"
+	},
+	"plugins": [
+		"@typescript-eslint"
+	],
+	"ignorePatterns": [
+		"*.json"
+	],
+	"rules": {
+		"semi": "off",
+		"indent": [
+			"warning",
+			4
+		],
+		"no-tabs": [
+			"off"
+		],
+		"quotes": [
+			"error",
+			"single"
+		],
+		"comma-dangle": "off",
+		"space-before-function-paren": "off",
+		"no-use-before-define": "off",
+		"@typescript-eslint/no-use-before-define": [
+			"error"
+		]
+	}
 }
