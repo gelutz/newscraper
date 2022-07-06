@@ -1,27 +1,12 @@
-import React from 'react';
-
-// import { Container } from './styles';
-
-const Header: React.FC = ({ children }) => {
-    return (
-        <nav>
-            <div>
-                <div>
-                    <div>
-                        <a href="/#">Newscraper</a>
-                    </div>
-                    <div>
-                        <button type="button" aria-label="toggle menu"></button>
-                    </div>
-                </div>
-
-                <div>
-                    <div></div>
-                    <div>{children}</div>
-                </div>
-            </div>
-        </nav>
-    );
-};
-
-export default Header;
+export const Header = (): JSX.Element => {
+	return <>
+		<span className="w-full h-8 flex justify-between items-stretch border-b-2 border-gray-300">
+			<div className="logo ml-2">
+				<a href="/">Newscraper</a>
+			</div>
+			<div className="icon mr-2">
+				<a href="/404">Well shoot</a>
+			</div>
+		</span>
+	</>
+}

@@ -1,35 +1,8 @@
-import React from 'react';
-
-import { format } from 'date-fns';
-// import { Container } from './styles';
-
-type News = {
-  id: number;
-  title: string;
-  link: string;
-  origin: string;
-  date: Date;
-};
-
-const NewsCard: React.FC<News> = ({ children, ...props }) => {
-    return (
-        <tbody>
-            <tr key={props.id}>
-                <td>
-                    <div>{props.title}</div>
-                </td>
-                {/* whitespace */}
-                <td>
-                    <div>
-                        <div>
-                            <div>{format(new Date(props.date), 'dd/MM/yyyy')}</div>
-                            <div>{props.origin}</div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    );
-};
-
-export default NewsCard;
+export const NewsCard: React.FC<{ title: string, description: string }> = ({ title, description }): JSX.Element => {
+	return <>
+		<li className="max-w-lg w-full overflow-clip p-4 h-32 bg-gray-800 border-black border">
+			<div className="text-gray-300 text-xl">{title}</div>
+			<div className="text-gray-500 ">{description}</div>
+		</li>
+	</>
+}

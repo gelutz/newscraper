@@ -1,30 +1,12 @@
-import News from '../../@types/News';
-import NewsCard from '../NewsCard';
+import { NewsCard } from "../NewsCard"
 
-// import { Container } from './styles';
+export const NewsList = (): JSX.Element => {
+	return (
+		<ul className="w-full h-full flex flex-col items-center">
+			<NewsCard title="Title 1" description="Description 1" />
+			<NewsCard title="Title 2" description="Description 2" />
+		</ul>
+	)
+}
 
-const NewsList: React.FC<{ news: News[] }> = ({ news }) => {
-    return (
-        <div>
-            <div>
-                <div>
-                    <div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th scope="col">Título</th>
-                                    <th scope="col">Data</th>
-                                </tr>
-                            </thead>
-                            {news?.map((value) => {
-                                return value && <NewsCard {...value} key={value.id} />;
-                            })}
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
 
-export default NewsList;

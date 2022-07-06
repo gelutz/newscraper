@@ -1,19 +1,17 @@
-import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import GlobalStyle from './assets/styles/global';
-import AppProvider from './hooks';
+import { Header } from "./components/Header"
+import { NewsList } from "./components/NewsList"
 
-import Routes from './routes';
-const App: React.FC = () => {
-    return (
-        <>
-            <BrowserRouter>
-                <AppProvider>
-                    <Routes />
-                </AppProvider>
-            </BrowserRouter>
-        </>
-    );
-};
+export const App: React.FC = (): JSX.Element => {
+	return (
+		<main className="max-h-screen h-screen max-w-screen w-screen">
+			<Header />
+			<div className="flex flex-col items-center h-full w-full">
+				<h1 className="w-full my-4 text-center text-3xl font-bold text-gray-600">
+					Welcome to Newscraper
+				</h1>
+				<NewsList />
+			</div>
+		</main>
 
-export default App;
+	)
+}
