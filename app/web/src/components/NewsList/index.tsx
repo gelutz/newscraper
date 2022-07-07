@@ -1,12 +1,25 @@
-import { NewsCard } from "../NewsCard"
+import { useEffect, useState } from "react"
+import { NewsCard, NewsCardProps } from "../NewsCard"
+
 
 export const NewsList = (): JSX.Element => {
-	return (
+	const [news, setNews] = useState<NewsCardProps[] | undefined>([])
+	useEffect(() => {
+		fetch('http://localhost:3333/news').then(response => {
+			if (response.ok) {
+				response.json().then(data => {
+					setNews(data)
+				})
+			}
+			throw response
+		})
+	}, [])
+	if (news) return (
 		<ul className="w-full h-full flex flex-col items-center">
-			<NewsCard title="Title 1" description="Description 1" />
-			<NewsCard title="Title 2" description="Description 2" />
+			{news.map((news, index) => <NewsCard key={index} {...news} />)}
 		</ul>
 	)
-}
 
+	return <></>
+}
 

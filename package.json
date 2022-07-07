@@ -1,33 +1,30 @@
 {
-    "name": "newscraper",
-    "version": "1.0.0",
-    "license": "MIT",
-    "private": "true",
-    "workspaces": [
-        "app/web",
-        "app/api",
-        "app/webscraper"
-    ],
-    "scripts": {
-        "dev": "yarn workspaces run dev",
-        "start": "yarn workspaces run start",
-        "start:web": "yarn workspace @newscraper/web start",
-        "start:api": "yarn workspace @newscraper/api start",
-        "start:scraper": "yarn workspace @newscraper/webscraper start",
-        "lint": "yarn workspaces run lint -o .lint.log",
-        "lint:web": "yarn workspace @newscraper/web lint",
-        "lint:api": "yarn workspace @newscraper/api lint",
-        "lint:scraper": "yarn workspace @newscraper/webscraper lint"
-    },
-    "devDependencies": {
-        "@typescript-eslint/eslint-plugin": "^4.22.0",
-        "@typescript-eslint/parser": "^4.22.0",
-        "eslint": "^7.24.0",
-        "eslint-config-standard": "^16.0.2",
-        "eslint-plugin-import": "^2.22.1",
-        "eslint-plugin-node": "^11.1.0",
-        "eslint-plugin-promise": "^4.3.1",
-        "eslint-plugin-react": "^7.23.2",
-        "prettier": "^2.2.1"
-    }
+	"name": "newscraper",
+	"version": "1.0.0",
+	"license": "MIT",
+	"private": "true",
+	"workspaces": [
+		"app/web",
+		"app/api",
+		"app/webscraper"
+	],
+	"scripts": {
+		"dev": "yarn workspaces run dev",
+		"dev:web": "yarn workspace @newscraper/web dev",
+		"dev:api": "yarn workspace @newscraper/api dev",
+		"dev:scraper": "yarn workspace @newscraper/webscraper dev",
+		"start": "yarn workspaces run start",
+		"lint": "yarn workspaces run lint -o .lint.log"
+	},
+	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^4.22.0",
+		"@typescript-eslint/parser": "^4.22.0",
+		"eslint": "^7.24.0",
+		"eslint-config-standard": "^16.0.2",
+		"eslint-plugin-import": "^2.22.1",
+		"eslint-plugin-node": "^11.1.0",
+		"eslint-plugin-promise": "^4.3.1",
+		"eslint-plugin-react": "^7.23.2",
+		"prettier": "^2.2.1"
+	}
 }
