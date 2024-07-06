@@ -1,60 +1,29 @@
-# NewsScraper 
+# Create T3 App
 
-NewsScraper is a web scraping application designed to aggregate news articles from predefined websites like Ycombinator. The project is structured with multiple containers using Node, React, Postgres, and Redis.
+This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
-## Features
+## What's next? How do I make an app with this?
 
-- **Automated Scraping**: Automatically scrapes predefined websites for the latest news articles.
-- **Database Storage**: Stores scraped articles in a Postgres database.
-- **Frontend Visualization**: Allows users to visualize the scraped articles via a React frontend.
-- **Containerized Environment**: Each component runs in its own Docker container for easy management and scalability.
+We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
 
-<div align="center">
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" alt="typescript" width="50" height="50"/>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original-wordmark.svg" alt="postgresql" width="50" height="50"/>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original-wordmark.svg"  alt="docker" width="50" height="50"/>
-</div>
+If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
 
-## Getting Started
+- [Next.js](https://nextjs.org)
+- [NextAuth.js](https://next-auth.js.org)
+- [Prisma](https://prisma.io)
+- [Drizzle](https://orm.drizzle.team)
+- [Tailwind CSS](https://tailwindcss.com)
+- [tRPC](https://trpc.io)
 
-### Prerequisites
+## Learn More
 
-- Docker
-- Docker Compose
+To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
 
-### Installation
+- [Documentation](https://create.t3.gg/)
+- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
 
-1. Clone the repository:
-    ```sh
-    git clone https://github.com/gelutz/newscraper.git
-    cd newscraper
-    ```
+You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
 
-2. Start the Docker containers:
-    ```sh
-    docker-compose up --build
-    ```
+## How do I deploy this?
 
-### Usage
-
-To scrape the predefined websites, send a GET request to the webscraper container's endpoint:
-```sh
-curl http://<webscraper-container-ip>:<port>/scrape
-```
-
-## Main commands:
-
-1. **make env** copies the .env in the root folder to all folders inside `app/`.
-
-2. **make log** shows the logs of the containers.
-
-3. **make clean** removes all `node_modules/` and `dist/` folders, and all `.env` files inside `app/`.
-
-4.  **make env** copies the .env in the root folder to all folders inside `app/`.
-
-### This service runs 5 different containers:
-1. Front-end container, running React JS.
-2. Back-end container, running a Node JS api connected with the database.
-3. PostgreSQL database.
-4. Webscraper service, running a Node JS api that fetches the news through an API route.
-5. Redis service with jwt token's allow/block lists.
+Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
